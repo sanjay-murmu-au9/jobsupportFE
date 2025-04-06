@@ -1,9 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import RegistrationForm from './components/forms/RegistrationForm';
-import { ROUTES } from './constants';
+import React from 'react';
 
 function App() {
   return (
