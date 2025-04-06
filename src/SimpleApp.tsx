@@ -403,246 +403,30 @@ const SimpleApp: React.FC = () => {
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', 
               padding: '2rem',
               width: '100%',
-              maxWidth: '600px'
+              maxWidth: '600px',
+              textAlign: 'center'
             }}>
-              <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.5rem', 
-                    fontWeight: '500', 
-                    fontSize: '0.875rem',
-                    color: '#374151' 
-                  }}>
-                    Full Name*
-                  </label>
-                  <input 
-                    type="text" 
-                    style={{ 
-                      width: '100%', 
-                      padding: '0.5rem 0.75rem', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '0.375rem',
-                      fontSize: '1rem'
-                    }} 
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.5rem', 
-                    fontWeight: '500', 
-                    fontSize: '0.875rem',
-                    color: '#374151' 
-                  }}>
-                    Email Address*
-                  </label>
-                  <input 
-                    type="email" 
-                    style={{ 
-                      width: '100%', 
-                      padding: '0.5rem 0.75rem', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '0.375rem',
-                      fontSize: '1rem'
-                    }} 
-                    placeholder="Enter your email"
-                  />
-                </div>
-
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.5rem', 
-                    fontWeight: '500', 
-                    fontSize: '0.875rem',
-                    color: '#374151' 
-                  }}>
-                    State/Region in India*
-                  </label>
-                  <select
-                    style={{ 
-                      width: '100%', 
-                      padding: '0.5rem 0.75rem', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '0.375rem',
-                      fontSize: '1rem',
-                      backgroundColor: 'white'
-                    }}
-                  >
-                    <option value="">Select your state</option>
-                    <option value="AN">Andaman and Nicobar Islands</option>
-                    <option value="AP">Andhra Pradesh</option>
-                    <option value="AR">Arunachal Pradesh</option>
-                    <option value="AS">Assam</option>
-                    <option value="BR">Bihar</option>
-                    <option value="CH">Chandigarh</option>
-                    <option value="CT">Chhattisgarh</option>
-                    <option value="DN">Dadra and Nagar Haveli</option>
-                    <option value="DD">Daman and Diu</option>
-                    <option value="DL">Delhi</option>
-                    <option value="GA">Goa</option>
-                    <option value="GJ">Gujarat</option>
-                    <option value="HR">Haryana</option>
-                    <option value="HP">Himachal Pradesh</option>
-                    <option value="JK">Jammu and Kashmir</option>
-                    <option value="JH">Jharkhand</option>
-                    <option value="KA">Karnataka</option>
-                    <option value="KL">Kerala</option>
-                    <option value="LA">Ladakh</option>
-                    <option value="LD">Lakshadweep</option>
-                    <option value="MP">Madhya Pradesh</option>
-                    <option value="MH">Maharashtra</option>
-                    <option value="MN">Manipur</option>
-                    <option value="ML">Meghalaya</option>
-                    <option value="MZ">Mizoram</option>
-                    <option value="NL">Nagaland</option>
-                    <option value="OR">Odisha</option>
-                    <option value="PY">Puducherry</option>
-                    <option value="PB">Punjab</option>
-                    <option value="RJ">Rajasthan</option>
-                    <option value="SK">Sikkim</option>
-                    <option value="TN">Tamil Nadu</option>
-                    <option value="TG">Telangana</option>
-                    <option value="TR">Tripura</option>
-                    <option value="UP">Uttar Pradesh</option>
-                    <option value="UT">Uttarakhand</option>
-                    <option value="WB">West Bengal</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.5rem', 
-                    fontWeight: '500', 
-                    fontSize: '0.875rem',
-                    color: '#374151' 
-                  }}>
-                    Employment Status*
-                  </label>
-                  <select
-                    style={{ 
-                      width: '100%', 
-                      padding: '0.5rem 0.75rem', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '0.375rem',
-                      fontSize: '1rem',
-                      backgroundColor: 'white'
-                    }}
-                  >
-                    <option value="">Select your status</option>
-                    <option value="unemployed">Recently laid off/unemployed</option>
-                    <option value="searching">Employed but searching</option>
-                    <option value="student">Student</option>
-                    <option value="graduate">Fresh graduate</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.5rem', 
-                    fontWeight: '500', 
-                    fontSize: '0.875rem',
-                    color: '#374151' 
-                  }}>
-                    Upload Resume/CV (PDF)
-                  </label>
-                  <div style={{ 
-                    border: '2px dashed #d1d5db', 
-                    borderRadius: '0.375rem', 
-                    padding: '1.5rem', 
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    backgroundColor: '#f9fafb'
-                  }}>
-                    <p style={{ marginBottom: '0.5rem', color: '#4b5563' }}>
-                      Drag & drop your resume here or click to browse
-                    </p>
-                    <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>
-                      Max file size: 5MB, Accepted: PDF
-                    </p>
-                    <input 
-                      type="file" 
-                      accept=".pdf" 
-                      style={{ display: 'none' }} 
-                      id="resume-upload" 
-                    />
-                    <label 
-                      htmlFor="resume-upload"
-                      style={{
-                        display: 'inline-block',
-                        marginTop: '1rem',
-                        padding: '0.5rem 1rem',
-                        backgroundColor: '#e5e7eb',
-                        color: '#374151',
-                        borderRadius: '0.25rem',
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Select File
-                    </label>
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.5rem', 
-                    fontWeight: '500', 
-                    fontSize: '0.875rem',
-                    color: '#374151' 
-                  }}>
-                    Your Message to the Government (Optional)
-                  </label>
-                  <textarea
-                    style={{ 
-                      width: '100%', 
-                      padding: '0.5rem 0.75rem', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '0.375rem',
-                      fontSize: '1rem',
-                      minHeight: '100px',
-                      resize: 'vertical'
-                    }}
-                    placeholder="Share your personal experience with unemployment or how government action could help you..."
-                  />
-                </div>
-                
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                  <input 
-                    type="checkbox" 
-                    id="consent" 
-                    style={{ marginTop: '0.25rem' }}
-                  />
-                  <label htmlFor="consent" style={{ fontSize: '0.875rem', color: '#4b5563' }}>
-                    I consent to my information being included in the petition to the Indian government for unemployment support and job creation initiatives.
-                  </label>
-                </div>
-                
-                <button
-                  type="button"
-                  style={{
-                    marginTop: '1rem',
-                    padding: '0.75rem 1.5rem',
-                    backgroundColor: '#2563eb',
-                    color: 'white',
-                    borderRadius: '0.375rem',
-                    fontWeight: '500',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '1rem'
-                  }}
-                >
-                  Sign the Petition
-                </button>
-              </form>
+              <h3 style={{ marginBottom: '1.5rem', color: '#1e3a8a' }}>Join thousands of Indians fighting for change</h3>
+              <p style={{ marginBottom: '2rem' }}>
+                Our registration form collects essential information to strengthen our petition.
+                Your details will be kept secure and only used for campaign purposes.
+              </p>
+              <button
+                onClick={navigateToRegister}
+                style={{
+                  display: 'inline-block',
+                  padding: '0.75rem 1.5rem',
+                  backgroundColor: '#2563eb',
+                  color: 'white',
+                  borderRadius: '0.375rem',
+                  fontWeight: '500',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '1rem'
+                }}
+              >
+                Sign the Petition
+              </button>
             </div>
           </div>
         </div>
