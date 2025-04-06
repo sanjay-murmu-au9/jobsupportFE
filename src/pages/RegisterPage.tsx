@@ -18,7 +18,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({
         onNavigateHome={onNavigateHome}
         onNavigateRegister={onNavigateRegister}
       />
-      <div style={{ padding: '2rem 0', backgroundColor: '#f7f9fc', minHeight: 'calc(100vh - 4rem)' }}>
+      <div style={{ padding: '6rem 0 2rem 0', backgroundColor: '#f7f9fc', minHeight: 'calc(100vh - 4rem)' }}>
         <RegistrationForm />
       </div>
     </div>
