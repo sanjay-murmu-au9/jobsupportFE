@@ -10,8 +10,6 @@ const RegistrationForm: React.FC = () => {
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
-    confirmPassword: '',
     phone: '',
     country: '',
     city: '',
@@ -97,16 +95,64 @@ const RegistrationForm: React.FC = () => {
     // Required fields
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
     
-    if (!formData.password) newErrors.password = 'Password is required';
-    else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else {
+      // More comprehensive email validation regex
+      const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!emailRegex.test(formData.email.toLowerCase())) {
+        newErrors.email = 'Please enter a valid email address';
+      } else {
+        // Check if email domain is from the top 10 most popular domains
+        const allowedDomains = [
+          'gmail.com',
+          'yahoo.com',
+          'hotmail.com',
+          'outlook.com',
+          'aol.com',
+          'protonmail.com',
+          'icloud.com',
+          'zoho.com',
+          'rediffmail.com',
+          'yandex.com'
+        ];
+        
+        const emailDomain = formData.email.toLowerCase().split('@')[1];
+        if (!allowedDomains.includes(emailDomain)) {
+          newErrors.email = 'Please use an email from one of the popular providers: ' + allowedDomains.join(', ');
+        }
+      }
+    }
     
-    if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
-    else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+    // Phone validation for Indian numbers
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number is required';
+    } else {
+      // Remove spaces and dashes for validation
+      const cleanPhone = formData.phone.replace(/[\s-]/g, '');
+      
+      // Check if it's a valid Indian mobile number
+      // Should be 10 digits and start with 6, 7, 8, or 9
+      if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+        newErrors.phone = 'Please enter a valid 10-digit Indian mobile number';
+      }
+    }
     
-    if (!formData.agreeToTerms) newErrors.agreeToTerms = 'You must consent to join the campaign';
+    // Country is required
+    if (!formData.country) {
+      newErrors.country = 'Please select your country';
+    }
+    
+    // Employment status is required
+    if (!formData.employmentStatus) {
+      newErrors.employmentStatus = 'Please select your employment status';
+    }
+    
+    if (!formData.agreeToTerms) {
+      newErrors.agreeToTerms = 'You must consent to join the campaign';
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -128,8 +174,6 @@ const RegistrationForm: React.FC = () => {
         firstName: '',
         lastName: '',
         email: '',
-        password: '',
-        confirmPassword: '',
         phone: '',
         country: '',
         city: '',
@@ -141,15 +185,24 @@ const RegistrationForm: React.FC = () => {
         agreeToTerms: false
       });
       
+      // Scroll to top to show success message
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
       setSuccessMessage('Thank you for joining our campaign! Your voice will help make employment a national priority.');
       
       // Clear success message after 5 seconds
       setTimeout(() => {
         setSuccessMessage('');
       }, 5000);
-    } catch {
-      // Handle any errors that might occur
-      setErrors({ submit: 'Registration failed. Please try again.' });
+    } catch (error) {
+      // Handle specific error cases
+      console.error("Registration error:", error);
+      setErrors({ 
+        submit: 'Registration failed. Please check your information and try again.' 
+      });
+      
+      // Scroll to top to show error message
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSubmitting(false);
     }
@@ -214,31 +267,10 @@ const RegistrationForm: React.FC = () => {
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
+            placeholder="example@gmail.com"
+            helperText="Use email from popular providers like Gmail, Yahoo, Hotmail, etc."
             required
           />
-          
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <Input
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              error={errors.password}
-              helperText="At least 8 characters"
-              required
-            />
-            
-            <Input
-              label="Confirm Password"
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              error={errors.confirmPassword}
-              required
-            />
-          </div>
           
           <Input
             label="Phone Number"
@@ -246,7 +278,10 @@ const RegistrationForm: React.FC = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            helperText="Optional"
+            error={errors.phone}
+            placeholder="e.g., 9876543210"
+            helperText="10-digit Indian mobile number starting with 6, 7, 8, or 9"
+            required
           />
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -256,7 +291,9 @@ const RegistrationForm: React.FC = () => {
               value={formData.country}
               onChange={handleChange}
               options={countryOptions}
+              error={errors.country}
               helperText="Select your country"
+              required
             />
             
             <Input
@@ -284,7 +321,9 @@ const RegistrationForm: React.FC = () => {
               value={formData.employmentStatus}
               onChange={handleChange}
               options={employmentStatusOptions}
+              error={errors.employmentStatus}
               helperText="Select your current status"
+              required
             />
           </div>
           
