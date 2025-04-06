@@ -4,7 +4,11 @@ import Input from './common/Input';
 import Select from './common/Select';
 import Textarea from './common/Textarea';
 
-const RegistrationForm: React.FC = () => {
+interface RegistrationFormProps {
+  onNavigateLogin?: () => void;
+}
+
+const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -133,7 +137,8 @@ const RegistrationForm: React.FC = () => {
       setTimeout(() => {
         setSuccessMessage('');
       }, 5000);
-    } catch (error) {
+    } catch {
+      // Handle any errors that might occur
       setErrors({ submit: 'Registration failed. Please try again.' });
     } finally {
       setIsSubmitting(false);
@@ -338,7 +343,21 @@ const RegistrationForm: React.FC = () => {
           </Button>
           
           <p style={{ textAlign: 'center', fontSize: '0.875rem', marginTop: '1rem' }}>
-            Already have an account? <a href="/login" style={{ color: '#2563eb' }}>Log In</a>
+            Already have an account?{' '}
+            <a 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigateLogin) onNavigateLogin();
+              }}
+              style={{ 
+                color: '#2563eb', 
+                textDecoration: 'none',
+                fontWeight: '500'
+              }}
+            >
+              Log In
+            </a>
           </p>
         </div>
       </form>
