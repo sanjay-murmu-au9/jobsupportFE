@@ -2,240 +2,247 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import RegisterPage from './pages/RegisterPage';
 
-// Login Form Component
-const LoginForm: React.FC<{ onNavigateRegister?: () => void }> = ({ onNavigateRegister }) => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loginError, setLoginError] = useState('');
+// Login Form Component - Commented out as not relevant for campaign platform
+// const LoginForm: React.FC<{ onNavigateRegister?: () => void }> = ({ onNavigateRegister }) => {
+//   const [formData, setFormData] = useState({
+//     email: '',
+//     password: '',
+//   });
+//   const [errors, setErrors] = useState<Record<string, string>>({});
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+//   const [loginError, setLoginError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Clear error when field is edited
-    if (errors[name]) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
-    
-    // Clear login error when any field changes
-    if (loginError) {
-      setLoginError('');
-    }
-  };
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const { name, value } = e.target;
+//     setFormData(prev => ({ ...prev, [name]: value }));
+//     
+//     // Clear error when field is edited
+//     if (errors[name]) {
+//       setErrors(prev => {
+//         const newErrors = { ...prev };
+//         delete newErrors[name];
+//         return newErrors;
+//       });
+//     }
+//     
+//     // Clear login error when any field changes
+//     if (loginError) {
+//       setLoginError('');
+//     }
+//   };
 
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    
-    // Email validation
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    
-    // Password validation
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+//   const validateForm = (): boolean => {
+//     const newErrors: Record<string, string> = {};
+//     
+//     // Email validation
+//     if (!formData.email.trim()) {
+//       newErrors.email = 'Email is required';
+//     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+//       newErrors.email = 'Email is invalid';
+//     }
+//     
+//     // Password validation
+//     if (!formData.password) {
+//       newErrors.password = 'Password is required';
+//     }
+//     
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    setIsSubmitting(true);
-    
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For demo purposes - simulating credential check
-      if (formData.email === 'test@example.com' && formData.password === 'password123') {
-        // Success - would typically set auth token or similar
-        console.log('Login successful');
-        // Redirect or other post-login actions would go here
-      } else {
-        // Authentication failed
-        setLoginError('Invalid email or password. Please try again.');
-      }
-    } catch {
-      setLoginError('Login failed. Please try again later.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     
+//     if (!validateForm()) return;
+//     
+//     setIsSubmitting(true);
+//     
+//     try {
+//       // Simulate API call
+//       await new Promise(resolve => setTimeout(resolve, 1000));
+//       
+//       // For demo purposes - simulating credential check
+//       if (formData.email === 'test@example.com' && formData.password === 'password123') {
+//         // Success - would typically set auth token or similar
+//         console.log('Login successful');
+//         // Redirect or other post-login actions would go here
+//       } else {
+//         // Authentication failed
+//         setLoginError('Invalid email or password. Please try again.');
+//       }
+//     } catch {
+//       setLoginError('Login failed. Please try again later.');
+//     } finally {
+//       setIsSubmitting(false);
+//     }
+//   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      {loginError && (
-        <div style={{ 
-          backgroundColor: '#fee2e2',
-          borderRadius: '0.375rem',
-          padding: '0.75rem',
-          marginBottom: '1.5rem',
-          color: '#b91c1c',
-          fontSize: '0.875rem'
-        }}>
-          {loginError}
-        </div>
-      )}
-    
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label style={{ 
-          display: 'block', 
-          marginBottom: '0.5rem', 
-          fontWeight: '500', 
-          fontSize: '0.875rem' 
-        }}>
-          Email
-        </label>
-        <input 
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          style={{ 
-            width: '100%', 
-            padding: '0.5rem 0.75rem', 
-            border: `1px solid ${errors.email ? '#f87171' : '#d1d5db'}`, 
-            borderRadius: '0.375rem',
-            outline: 'none'
-          }} 
-          placeholder="Enter your email"
-        />
-        {errors.email && (
-          <p style={{ 
-            marginTop: '0.25rem', 
-            fontSize: '0.75rem', 
-            color: '#dc2626' 
-          }}>
-            {errors.email}
-          </p>
-        )}
-      </div>
-      
-      <div style={{ marginBottom: '1.5rem' }}>
-        <label style={{ 
-          display: 'block', 
-          marginBottom: '0.5rem', 
-          fontWeight: '500', 
-          fontSize: '0.875rem' 
-        }}>
-          Password
-        </label>
-        <input 
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          style={{ 
-            width: '100%', 
-            padding: '0.5rem 0.75rem', 
-            border: `1px solid ${errors.password ? '#f87171' : '#d1d5db'}`, 
-            borderRadius: '0.375rem',
-            outline: 'none'
-          }} 
-          placeholder="Enter your password"
-        />
-        {errors.password && (
-          <p style={{ 
-            marginTop: '0.25rem', 
-            fontSize: '0.75rem', 
-            color: '#dc2626' 
-          }}>
-            {errors.password}
-          </p>
-        )}
-      </div>
-      
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <input
-            type="checkbox"
-            id="rememberMe"
-            style={{ marginRight: '0.5rem' }}
-          />
-          <label htmlFor="rememberMe" style={{ fontSize: '0.875rem' }}>Remember me</label>
-        </div>
-        <a href="#" style={{ fontSize: '0.875rem', color: '#2563eb' }}>Forgot password?</a>
-      </div>
-      
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        style={{
-          width: '100%',
-          backgroundColor: '#2563eb',
-          color: 'white',
-          fontWeight: '500',
-          padding: '0.75rem 1rem',
-          borderRadius: '0.375rem',
-          border: 'none',
-          cursor: isSubmitting ? 'not-allowed' : 'pointer',
-          opacity: isSubmitting ? 0.7 : 1,
-          marginBottom: '1.5rem',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        {isSubmitting ? (
-          <>
-            <span style={{ 
-              display: 'inline-block', 
-              width: '1rem', 
-              height: '1rem', 
-              borderRadius: '50%', 
-              border: '2px solid white', 
-              borderTopColor: 'transparent', 
-              marginRight: '0.5rem',
-              animation: 'spin 1s linear infinite'
-            }}></span>
-            Logging in...
-          </>
-        ) : 'Log in'}
-      </button>
-      
-      <p style={{ textAlign: 'center', fontSize: '0.875rem' }}>
-        Don't have an account?{' '}
-        <a 
-          href="#" 
-          onClick={(e) => { 
-            e.preventDefault(); 
-            if (onNavigateRegister) onNavigateRegister(); 
-          }}
-          style={{ 
-            color: '#2563eb', 
-            fontWeight: '500',
-            textDecoration: 'none'
-          }}
-        >
-          Register now
-        </a>
-      </p>
-    </form>
-  );
-};
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       {loginError && (
+//         <div style={{ 
+//           backgroundColor: '#fee2e2',
+//           borderRadius: '0.375rem',
+//           padding: '0.75rem',
+//           marginBottom: '1.5rem',
+//           color: '#b91c1c',
+//           fontSize: '0.875rem'
+//         }}>
+//           {loginError}
+//         </div>
+//       )}
+//     
+//       <div style={{ marginBottom: '1.5rem' }}>
+//         <label style={{ 
+//           display: 'block', 
+//           marginBottom: '0.5rem', 
+//           fontWeight: '500', 
+//           fontSize: '0.875rem' 
+//         }}>
+//           Email
+//         </label>
+//         <input 
+//           type="email"
+//           name="email"
+//           value={formData.email}
+//           onChange={handleChange}
+//           style={{ 
+//             width: '100%', 
+//             padding: '0.5rem 0.75rem', 
+//             border: `1px solid ${errors.email ? '#f87171' : '#d1d5db'}`, 
+//             borderRadius: '0.375rem',
+//             outline: 'none'
+//           }} 
+//           placeholder="Enter your email"
+//         />
+//         {errors.email && (
+//           <p style={{ 
+//             marginTop: '0.25rem', 
+//             fontSize: '0.75rem', 
+//             color: '#dc2626' 
+//           }}>
+//             {errors.email}
+//           </p>
+//         )}
+//       </div>
+//       
+//       <div style={{ marginBottom: '1.5rem' }}>
+//         <label style={{ 
+//           display: 'block', 
+//           marginBottom: '0.5rem', 
+//           fontWeight: '500', 
+//           fontSize: '0.875rem' 
+//         }}>
+//           Password
+//         </label>
+//         <input 
+//           type="password"
+//           name="password"
+//           value={formData.password}
+//           onChange={handleChange}
+//           style={{ 
+//             width: '100%', 
+//             padding: '0.5rem 0.75rem', 
+//             border: `1px solid ${errors.password ? '#f87171' : '#d1d5db'}`, 
+//             borderRadius: '0.375rem',
+//             outline: 'none'
+//           }} 
+//           placeholder="Enter your password"
+//         />
+//         {errors.password && (
+//           <p style={{ 
+//             marginTop: '0.25rem', 
+//             fontSize: '0.75rem', 
+//             color: '#dc2626' 
+//           }}>
+//             {errors.password}
+//           </p>
+//         )}
+//       </div>
+//       
+//       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+//         <div style={{ display: 'flex', alignItems: 'center' }}>
+//           <input
+//             type="checkbox"
+//             id="rememberMe"
+//             style={{ marginRight: '0.5rem' }}
+//           />
+//           <label htmlFor="rememberMe" style={{ fontSize: '0.875rem' }}>Remember me</label>
+//         </div>
+//         <a href="#" style={{ fontSize: '0.875rem', color: '#2563eb' }}>Forgot password?</a>
+//       </div>
+//       
+//       <button
+//         type="submit"
+//         disabled={isSubmitting}
+//         style={{
+//           width: '100%',
+//           backgroundColor: '#2563eb',
+//           color: 'white',
+//           fontWeight: '500',
+//           padding: '0.75rem 1rem',
+//           borderRadius: '0.375rem',
+//           border: 'none',
+//           cursor: isSubmitting ? 'not-allowed' : 'pointer',
+//           opacity: isSubmitting ? 0.7 : 1,
+//           marginBottom: '1.5rem',
+//           display: 'flex',
+//           justifyContent: 'center',
+//           alignItems: 'center'
+//         }}
+//       >
+//         {isSubmitting ? (
+//           <>
+//             <span style={{ 
+//               display: 'inline-block', 
+//               width: '1rem', 
+//               height: '1rem', 
+//               borderRadius: '50%', 
+//               border: '2px solid white', 
+//               borderTopColor: 'transparent', 
+//               marginRight: '0.5rem',
+//               animation: 'spin 1s linear infinite'
+//             }}></span>
+//             Logging in...
+//           </>
+//         ) : 'Log in'}
+//       </button>
+//       
+//       <p style={{ textAlign: 'center', fontSize: '0.875rem' }}>
+//         Don't have an account?{' '}
+//         <a 
+//           href="#" 
+//           onClick={(e) => { 
+//             e.preventDefault(); 
+//             if (onNavigateRegister) onNavigateRegister(); 
+//           }}
+//           style={{ 
+//             color: '#2563eb', 
+//             fontWeight: '500',
+//             textDecoration: 'none'
+//           }}
+//         >
+//           Register now
+//         </a>
+//       </p>
+//     </form>
+//   );
+// };
 
 const SimpleApp: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'register' | 'login'>('home');
+  // Login option removed as not relevant for campaign platform
+  const [currentPage, setCurrentPage] = useState<'home' | 'register'>('home');
 
   // Simple navigation functions
   const navigateToHome = () => setCurrentPage('home');
   const navigateToRegister = () => setCurrentPage('register');
-  const navigateToLogin = () => setCurrentPage('login');
+  /* Login feature removed as not relevant for campaign platform
+  const navigateToLogin = () => {
+    // Alert user that login is not available in this campaign-focused version
+    alert("Login functionality is not available in the campaign platform.");
+    setCurrentPage('home');
+  };
+  */
 
   // Basic router
   if (currentPage === 'register') {
@@ -243,11 +250,11 @@ const SimpleApp: React.FC = () => {
       <RegisterPage 
         onNavigateHome={navigateToHome}
         onNavigateRegister={navigateToRegister}
-        onNavigateLogin={navigateToLogin}
       />
     );
   }
 
+  /* Login page commented out as not relevant for campaign platform
   if (currentPage === 'login') {
     return (
       <div>
@@ -281,6 +288,7 @@ const SimpleApp: React.FC = () => {
       </div>
     );
   }
+  */
 
   // Home page
   return (
@@ -288,7 +296,6 @@ const SimpleApp: React.FC = () => {
       <Navbar 
         onNavigateHome={navigateToHome}
         onNavigateRegister={navigateToRegister}
-        onNavigateLogin={navigateToLogin}
       />
 
       {/* Hero Section - Updated for Job Market Advocacy */}
@@ -301,7 +308,7 @@ const SimpleApp: React.FC = () => {
             textAlign: 'center' 
           }}>
             <h1 style={{ marginBottom: '1.5rem' }}>
-              Advocate for Unemployment Support in India
+              Making Employment a National Priority for India
             </h1>
             <p style={{ fontSize: '1.25rem', marginBottom: '2rem', maxWidth: '800px', lineHeight: '1.6' }}>
               The unemployment crisis in India has reached critical levels. Over <strong>5.2 million</strong> workers 
@@ -833,7 +840,7 @@ const SimpleApp: React.FC = () => {
                 borderBottom: '2px solid #4f84e8',
                 paddingBottom: '0.5rem',
                 display: 'inline-block'
-              }}>JobSupportFE</h3>
+              }}>JobPriorityIndia</h3>
               <p style={{ 
                 maxWidth: '400px',
                 lineHeight: '1.6',
@@ -1140,7 +1147,7 @@ const SimpleApp: React.FC = () => {
             color: 'rgba(255, 255, 255, 0.7)',
             fontSize: '0.875rem'
           }}>
-            <p>&copy; {new Date().getFullYear()} JobSupportFE - Advocating for India's Unemployed. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} JobPriorityIndia - Advocating for India's Unemployed. All rights reserved.</p>
           </div>
         </div>
       </footer>

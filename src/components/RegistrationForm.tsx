@@ -4,11 +4,8 @@ import Input from './common/Input';
 import Select from './common/Select';
 import Textarea from './common/Textarea';
 
-interface RegistrationFormProps {
-  onNavigateLogin?: () => void;
-}
-
-const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) => {
+// Campaign-focused registration form component with no login navigation
+const RegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -19,6 +16,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
     country: '',
     city: '',
     education: '',
+    employmentStatus: '',
     skills: '',
     experience: '',
     resume: null as File | null,
@@ -44,6 +42,18 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
     { value: 'bachelor', label: 'Bachelor\'s Degree' },
     { value: 'master', label: 'Master\'s Degree' },
     { value: 'doctorate', label: 'Doctorate' },
+    { value: 'diploma', label: 'Diploma/Certificate' },
+    { value: 'student', label: 'Currently Studying' },
+    { value: 'other', label: 'Other' }
+  ];
+
+  const employmentStatusOptions = [
+    { value: 'unemployed', label: 'Currently Unemployed' },
+    { value: 'laid_off', label: 'Recently Laid Off' },
+    { value: 'underemployed', label: 'Underemployed' },
+    { value: 'student', label: 'Student Seeking Employment' },
+    { value: 'graduate', label: 'Recent Graduate' },
+    { value: 'employed', label: 'Employed but Supporting Campaign' },
     { value: 'other', label: 'Other' }
   ];
 
@@ -96,8 +106,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
     if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
     else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
     
-    if (!formData.skills.trim()) newErrors.skills = 'Please enter at least one skill';
-    if (!formData.agreeToTerms) newErrors.agreeToTerms = 'You must agree to the terms and conditions';
+    if (!formData.agreeToTerms) newErrors.agreeToTerms = 'You must consent to join the campaign';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -125,13 +134,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
         country: '',
         city: '',
         education: '',
+        employmentStatus: '',
         skills: '',
         experience: '',
         resume: null,
         agreeToTerms: false
       });
       
-      setSuccessMessage('Registration successful! You can now log in to your account.');
+      setSuccessMessage('Thank you for joining our campaign! Your voice will help make employment a national priority.');
       
       // Clear success message after 5 seconds
       setTimeout(() => {
@@ -148,7 +158,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' }}>
       <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '1.5rem', textAlign: 'center' }}>
-        Register as a Job Seeker
+        Add Your Voice to the Campaign
       </h1>
       
       {successMessage && (
@@ -258,14 +268,25 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
             />
           </div>
           
-          <Select
-            label="Highest Education Level"
-            name="education"
-            value={formData.education}
-            onChange={handleChange}
-            options={educationOptions}
-            helperText="Select your highest education level"
-          />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <Select
+              label="Education Level"
+              name="education"
+              value={formData.education}
+              onChange={handleChange}
+              options={educationOptions}
+              helperText="Optional"
+            />
+            
+            <Select
+              label="Employment Status"
+              name="employmentStatus"
+              value={formData.employmentStatus}
+              onChange={handleChange}
+              options={employmentStatusOptions}
+              helperText="Select your current status"
+            />
+          </div>
           
           <Textarea
             label="Skills"
@@ -273,61 +294,100 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
             value={formData.skills}
             onChange={handleChange}
             error={errors.skills}
-            helperText="Enter your skills separated by commas (e.g., JavaScript, React, Node.js)"
+            placeholder="Enter your skills separated by commas (e.g., Communication, Leadership, Programming)"
+            helperText="Skills that could contribute to the campaign"
             rows={3}
-            required
           />
           
           <Textarea
-            label="Experience"
+            label="Tell Us Your Story"
             name="experience"
             value={formData.experience}
             onChange={handleChange}
-            helperText="Briefly describe your work experience (optional)"
+            placeholder="Share your personal experience with unemployment or why you support this campaign. Your story can help make a difference."
+            helperText="This will help strengthen our message to policymakers"
             rows={4}
           />
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Resume / CV (Optional)
+            <label style={{ 
+              display: 'block', 
+              marginBottom: '0.5rem', 
+              fontWeight: '500', 
+              fontSize: '0.875rem' 
+            }}>
+              Upload Supporting Documents (Optional)
             </label>
-            <input
-              type="file"
-              name="resume"
-              onChange={handleFileChange}
-              style={{
-                border: '1px solid #d1d5db',
-                borderRadius: '0.375rem',
-                padding: '0.5rem',
-                width: '100%'
-              }}
-              accept=".pdf,.doc,.docx"
-            />
-            <p className="mt-1 text-sm text-gray-500">
-              Upload your resume (PDF, DOC, or DOCX format)
-            </p>
+            <div style={{ 
+              border: '1px dashed #d1d5db', 
+              borderRadius: '0.375rem', 
+              padding: '1.5rem', 
+              textAlign: 'center',
+              backgroundColor: '#f9fafb'
+            }}>
+              <p style={{ marginBottom: '0.5rem', color: '#4b5563' }}>
+                Attach your resume or any relevant documents
+              </p>
+              <p style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '1rem' }}>
+                You can upload your resume, degree certificates, or other documents that support your campaign participation.
+              </p>
+              <input
+                type="file"
+                id="resume"
+                name="resume"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
+              <label
+                htmlFor="resume"
+                style={{
+                  backgroundColor: '#e5e7eb',
+                  color: '#374151',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.375rem',
+                  cursor: 'pointer',
+                  display: 'inline-block',
+                  fontWeight: '500',
+                  fontSize: '0.875rem'
+                }}
+              >
+                Choose File
+              </label>
+              {formData.resume && (
+                <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#4b5563' }}>
+                  Selected file: {formData.resume.name}
+                </p>
+              )}
+            </div>
           </div>
           
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ marginTop: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
               <input
                 type="checkbox"
                 id="agreeToTerms"
                 name="agreeToTerms"
                 checked={formData.agreeToTerms}
                 onChange={handleCheckboxChange}
-                style={{
-                  marginRight: '0.5rem',
-                  width: '1rem',
-                  height: '1rem'
-                }}
+                style={{ marginTop: '0.25rem' }}
               />
-              <label htmlFor="agreeToTerms" style={{ fontSize: '0.875rem' }}>
-                I agree to the <a href="/terms" style={{ color: '#2563eb' }}>Terms and Conditions</a> and <a href="/privacy" style={{ color: '#2563eb' }}>Privacy Policy</a>
+              <label 
+                htmlFor="agreeToTerms" 
+                style={{ 
+                  fontSize: '0.875rem', 
+                  color: errors.agreeToTerms ? '#dc2626' : '#4b5563' 
+                }}
+              >
+                I consent to my information being included in the petition to make employment a national priority. I understand my data may be shared with relevant government bodies and officials as part of this advocacy campaign.
               </label>
             </div>
             {errors.agreeToTerms && (
-              <p style={{ marginTop: '0.25rem', fontSize: '0.875rem', color: '#b91c1c' }}>
+              <p style={{ 
+                marginTop: '0.25rem', 
+                fontSize: '0.75rem', 
+                color: '#dc2626',
+                marginLeft: '1.5rem'
+              }}>
                 {errors.agreeToTerms}
               </p>
             )}
@@ -338,27 +398,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onNavigateLogin }) 
             variant="primary"
             isLoading={isSubmitting}
             fullWidth
+            style={{ marginTop: '1.5rem' }}
           >
-            {isSubmitting ? 'Registering...' : 'Register Now'}
+            {isSubmitting ? 'Submitting...' : 'Join the Campaign'}
           </Button>
-          
-          <p style={{ textAlign: 'center', fontSize: '0.875rem', marginTop: '1rem' }}>
-            Already have an account?{' '}
-            <a 
-              href="#" 
-              onClick={(e) => {
-                e.preventDefault();
-                if (onNavigateLogin) onNavigateLogin();
-              }}
-              style={{ 
-                color: '#2563eb', 
-                textDecoration: 'none',
-                fontWeight: '500'
-              }}
-            >
-              Log In
-            </a>
-          </p>
         </div>
       </form>
     </div>

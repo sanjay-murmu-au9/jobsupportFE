@@ -3,13 +3,11 @@ import React, { useState } from 'react';
 interface NavbarProps {
   onNavigateHome?: () => void;
   onNavigateRegister?: () => void;
-  onNavigateLogin?: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ 
   onNavigateHome, 
-  onNavigateRegister, 
-  onNavigateLogin 
+  onNavigateRegister
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -52,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 textDecoration: 'none'
               }}
             >
-              JobSupportFE
+              JobPriorityIndia
             </a>
           </div>
           {/* Desktop navigation */}
@@ -79,7 +77,7 @@ const Navbar: React.FC<NavbarProps> = ({
               fontWeight: '500',
               textDecoration: 'none'
             }}>
-              Jobs
+              Stories
             </a>
             <a href="#" style={{ 
               color: '#6b7280',
@@ -124,28 +122,7 @@ const Navbar: React.FC<NavbarProps> = ({
               textDecoration: 'none'
             }}
           >
-            Register
-          </a>
-          <a
-            href="#"
-            onClick={(e) => handleNavigation(e, onNavigateLogin)}
-            style={{
-              marginLeft: '1rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '0.5rem 1rem',
-              border: '1px solid #d1d5db',
-              borderRadius: '0.375rem',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              color: '#4b5563',
-              backgroundColor: 'white',
-              textDecoration: 'none'
-            }}
-          >
-            Log in
+            Join Campaign
           </a>
         </div>
         {/* Mobile menu button */}
@@ -228,7 +205,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 textDecoration: 'none'
               }}
             >
-              Jobs
+              Stories
             </a>
             <a
               href="#"
@@ -298,26 +275,6 @@ const Navbar: React.FC<NavbarProps> = ({
                 }}
               >
                 Register
-              </a>
-              <a
-                href="#"
-                onClick={(e) => handleNavigation(e, onNavigateLogin)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0.5rem 1rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                  fontSize: '0.875rem',
-                  fontWeight: '500',
-                  color: '#4b5563',
-                  backgroundColor: 'white',
-                  textDecoration: 'none'
-                }}
-              >
-                Log in
               </a>
             </div>
           </div>
