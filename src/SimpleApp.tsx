@@ -291,8 +291,8 @@ const SimpleApp: React.FC = () => {
         onNavigateLogin={navigateToLogin}
       />
 
-      {/* Hero Section */}
-      <section style={{ backgroundColor: '#f7f9fc', padding: '4rem 1rem' }}>
+      {/* Hero Section - Updated for Job Market Advocacy */}
+      <section style={{ backgroundColor: '#1e3a8a', color: 'white', padding: '4rem 1rem' }}>
         <div className="container">
           <div style={{ 
             display: 'flex', 
@@ -300,67 +300,369 @@ const SimpleApp: React.FC = () => {
             alignItems: 'center', 
             textAlign: 'center' 
           }}>
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>
-              Supporting Job Seekers Worldwide
+            <h1 style={{ marginBottom: '1.5rem' }}>
+              Advocate for Unemployment Support in India
             </h1>
-            <p style={{ fontSize: '1.25rem', marginBottom: '2rem', maxWidth: '800px' }}>
-              Connect with opportunities that match your skills and aspirations. 
-              Our platform is designed to help students and unemployed individuals 
-              find their perfect career path.
+            <p style={{ fontSize: '1.25rem', marginBottom: '2rem', maxWidth: '800px', lineHeight: '1.6' }}>
+              The unemployment crisis in India has reached critical levels. Over <strong>5.2 million</strong> workers 
+              have lost their jobs in recent years, with <strong>78%</strong> struggling to meet basic needs. 
+              We're building a coalition to petition the Indian government for meaningful support and new job opportunities.
             </p>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <button
-                onClick={navigateToRegister}
-                style={{
-                  display: 'inline-block',
-                  padding: '0.75rem 1.5rem',
-                  backgroundColor: '#2563eb',
-                  color: 'white',
-                  borderRadius: '0.375rem',
-                  fontWeight: '500',
-                  textDecoration: 'none',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                Register Now
-              </button>
-              <a
-                href="#how-it-works"
-                style={{
-                  display: 'inline-block',
-                  padding: '0.75rem 1.5rem',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.375rem',
-                  fontWeight: '500',
-                  color: '#4b5563',
-                  textDecoration: 'none'
-                }}
-              >
-                Learn More
-              </a>
+            <div className="responsive-grid" style={{ 
+              display: 'flex', 
+              flexWrap: 'wrap', 
+              justifyContent: 'center', 
+              gap: '2rem',
+              marginBottom: '2rem',
+              width: '100%',
+              maxWidth: '900px'
+            }}>
+              <div style={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                padding: '1.5rem', 
+                borderRadius: '0.5rem',
+                flex: '1',
+                minWidth: '200px'
+              }}>
+                <p style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>56%</p>
+                <p style={{ fontSize: '1rem' }}>youth unemployment rate in certain sectors</p>
+              </div>
+              <div style={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                padding: '1.5rem', 
+                borderRadius: '0.5rem',
+                flex: '1',
+                minWidth: '200px'
+              }}>
+                <p style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>83%</p>
+                <p style={{ fontSize: '1rem' }}>faced salary cuts or delayed payments</p>
+              </div>
+              <div style={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                padding: '1.5rem', 
+                borderRadius: '0.5rem',
+                flex: '1',
+                minWidth: '200px'
+              }}>
+                <p style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>72%</p>
+                <p style={{ fontSize: '1rem' }}>unable to pay EMIs and loan installments</p>
+              </div>
+            </div>
+            <button
+              onClick={navigateToRegister}
+              style={{
+                display: 'inline-block',
+                padding: '0.75rem 1.5rem',
+                backgroundColor: '#ffffff',
+                color: '#1e3a8a',
+                borderRadius: '0.375rem',
+                fontWeight: '600',
+                textDecoration: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '1.125rem'
+              }}
+            >
+              Join Our Initiative
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Campaign Registration Section */}
+      <section style={{ backgroundColor: '#f7f9fc', padding: '4rem 1rem' }}>
+        <div className="container">
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            maxWidth: '1000px',
+            margin: '0 auto'
+          }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem', maxWidth: '700px' }}>
+              <h2 style={{ marginBottom: '1rem', color: '#1e3a8a' }}>
+                Register to Strengthen Our Collective Voice
+              </h2>
+              <p style={{ fontSize: '1.125rem', color: '#4b5563' }}>
+                By registering with us, you help strengthen our petition to the Indian government 
+                for unemployment benefits, skill development programs, and new job creation initiatives. 
+                Together, we can make the government take action on this critical issue.
+              </p>
+            </div>
+            
+            <div style={{ 
+              backgroundColor: 'white', 
+              borderRadius: '0.5rem', 
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', 
+              padding: '2rem',
+              width: '100%',
+              maxWidth: '600px'
+            }}>
+              <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div>
+                  <label style={{ 
+                    display: 'block', 
+                    marginBottom: '0.5rem', 
+                    fontWeight: '500', 
+                    fontSize: '0.875rem',
+                    color: '#374151' 
+                  }}>
+                    Full Name*
+                  </label>
+                  <input 
+                    type="text" 
+                    style={{ 
+                      width: '100%', 
+                      padding: '0.5rem 0.75rem', 
+                      border: '1px solid #d1d5db', 
+                      borderRadius: '0.375rem',
+                      fontSize: '1rem'
+                    }} 
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                
+                <div>
+                  <label style={{ 
+                    display: 'block', 
+                    marginBottom: '0.5rem', 
+                    fontWeight: '500', 
+                    fontSize: '0.875rem',
+                    color: '#374151' 
+                  }}>
+                    Email Address*
+                  </label>
+                  <input 
+                    type="email" 
+                    style={{ 
+                      width: '100%', 
+                      padding: '0.5rem 0.75rem', 
+                      border: '1px solid #d1d5db', 
+                      borderRadius: '0.375rem',
+                      fontSize: '1rem'
+                    }} 
+                    placeholder="Enter your email"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ 
+                    display: 'block', 
+                    marginBottom: '0.5rem', 
+                    fontWeight: '500', 
+                    fontSize: '0.875rem',
+                    color: '#374151' 
+                  }}>
+                    State/Region in India*
+                  </label>
+                  <select
+                    style={{ 
+                      width: '100%', 
+                      padding: '0.5rem 0.75rem', 
+                      border: '1px solid #d1d5db', 
+                      borderRadius: '0.375rem',
+                      fontSize: '1rem',
+                      backgroundColor: 'white'
+                    }}
+                  >
+                    <option value="">Select your state</option>
+                    <option value="AN">Andaman and Nicobar Islands</option>
+                    <option value="AP">Andhra Pradesh</option>
+                    <option value="AR">Arunachal Pradesh</option>
+                    <option value="AS">Assam</option>
+                    <option value="BR">Bihar</option>
+                    <option value="CH">Chandigarh</option>
+                    <option value="CT">Chhattisgarh</option>
+                    <option value="DN">Dadra and Nagar Haveli</option>
+                    <option value="DD">Daman and Diu</option>
+                    <option value="DL">Delhi</option>
+                    <option value="GA">Goa</option>
+                    <option value="GJ">Gujarat</option>
+                    <option value="HR">Haryana</option>
+                    <option value="HP">Himachal Pradesh</option>
+                    <option value="JK">Jammu and Kashmir</option>
+                    <option value="JH">Jharkhand</option>
+                    <option value="KA">Karnataka</option>
+                    <option value="KL">Kerala</option>
+                    <option value="LA">Ladakh</option>
+                    <option value="LD">Lakshadweep</option>
+                    <option value="MP">Madhya Pradesh</option>
+                    <option value="MH">Maharashtra</option>
+                    <option value="MN">Manipur</option>
+                    <option value="ML">Meghalaya</option>
+                    <option value="MZ">Mizoram</option>
+                    <option value="NL">Nagaland</option>
+                    <option value="OR">Odisha</option>
+                    <option value="PY">Puducherry</option>
+                    <option value="PB">Punjab</option>
+                    <option value="RJ">Rajasthan</option>
+                    <option value="SK">Sikkim</option>
+                    <option value="TN">Tamil Nadu</option>
+                    <option value="TG">Telangana</option>
+                    <option value="TR">Tripura</option>
+                    <option value="UP">Uttar Pradesh</option>
+                    <option value="UT">Uttarakhand</option>
+                    <option value="WB">West Bengal</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ 
+                    display: 'block', 
+                    marginBottom: '0.5rem', 
+                    fontWeight: '500', 
+                    fontSize: '0.875rem',
+                    color: '#374151' 
+                  }}>
+                    Employment Status*
+                  </label>
+                  <select
+                    style={{ 
+                      width: '100%', 
+                      padding: '0.5rem 0.75rem', 
+                      border: '1px solid #d1d5db', 
+                      borderRadius: '0.375rem',
+                      fontSize: '1rem',
+                      backgroundColor: 'white'
+                    }}
+                  >
+                    <option value="">Select your status</option>
+                    <option value="unemployed">Recently laid off/unemployed</option>
+                    <option value="searching">Employed but searching</option>
+                    <option value="student">Student</option>
+                    <option value="graduate">Fresh graduate</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label style={{ 
+                    display: 'block', 
+                    marginBottom: '0.5rem', 
+                    fontWeight: '500', 
+                    fontSize: '0.875rem',
+                    color: '#374151' 
+                  }}>
+                    Upload Resume/CV (PDF)
+                  </label>
+                  <div style={{ 
+                    border: '2px dashed #d1d5db', 
+                    borderRadius: '0.375rem', 
+                    padding: '1.5rem', 
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    backgroundColor: '#f9fafb'
+                  }}>
+                    <p style={{ marginBottom: '0.5rem', color: '#4b5563' }}>
+                      Drag & drop your resume here or click to browse
+                    </p>
+                    <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                      Max file size: 5MB, Accepted: PDF
+                    </p>
+                    <input 
+                      type="file" 
+                      accept=".pdf" 
+                      style={{ display: 'none' }} 
+                      id="resume-upload" 
+                    />
+                    <label 
+                      htmlFor="resume-upload"
+                      style={{
+                        display: 'inline-block',
+                        marginTop: '1rem',
+                        padding: '0.5rem 1rem',
+                        backgroundColor: '#e5e7eb',
+                        color: '#374151',
+                        borderRadius: '0.25rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Select File
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ 
+                    display: 'block', 
+                    marginBottom: '0.5rem', 
+                    fontWeight: '500', 
+                    fontSize: '0.875rem',
+                    color: '#374151' 
+                  }}>
+                    Your Message to the Government (Optional)
+                  </label>
+                  <textarea
+                    style={{ 
+                      width: '100%', 
+                      padding: '0.5rem 0.75rem', 
+                      border: '1px solid #d1d5db', 
+                      borderRadius: '0.375rem',
+                      fontSize: '1rem',
+                      minHeight: '100px',
+                      resize: 'vertical'
+                    }}
+                    placeholder="Share your personal experience with unemployment or how government action could help you..."
+                  />
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                  <input 
+                    type="checkbox" 
+                    id="consent" 
+                    style={{ marginTop: '0.25rem' }}
+                  />
+                  <label htmlFor="consent" style={{ fontSize: '0.875rem', color: '#4b5563' }}>
+                    I consent to my information being included in the petition to the Indian government for unemployment support and job creation initiatives.
+                  </label>
+                </div>
+                
+                <button
+                  type="button"
+                  style={{
+                    marginTop: '1rem',
+                    padding: '0.75rem 1.5rem',
+                    backgroundColor: '#2563eb',
+                    color: 'white',
+                    borderRadius: '0.375rem',
+                    fontWeight: '500',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '1rem'
+                  }}
+                >
+                  Sign the Petition
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="how-it-works" style={{ padding: '4rem 1rem' }}>
+      {/* How Our Campaign Works (Features) */}
+      <section style={{ padding: '4rem 1rem' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: '2rem' }}>How It Works</h2>
-            <p style={{ maxWidth: '600px', margin: '0 auto' }}>
-              Our simple three-step process to help you find and secure the job you deserve.
+          <div style={{ 
+            textAlign: 'center', 
+            marginBottom: '3rem'
+          }}>
+            <h2 style={{ color: '#1e3a8a', marginBottom: '1rem' }}>
+              How Our Campaign Works
+            </h2>
+            <p style={{ fontSize: '1.125rem', color: '#4b5563', maxWidth: '700px', margin: '0 auto' }}>
+              Our three-step approach to advocate for government action on unemployment
             </p>
           </div>
           
-          <div style={{ 
+          <div className="responsive-grid" style={{ 
             display: 'flex', 
             flexDirection: 'column', 
             gap: '2rem',
             margin: '0 auto',
             maxWidth: '1000px'
-          }} className="md:flex-row">
+          }}>
             <div style={{ 
               flex: '1', 
               display: 'flex', 
@@ -383,8 +685,8 @@ const SimpleApp: React.FC = () => {
               }}>
                 <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2563eb' }}>1</span>
               </div>
-              <h3 style={{ marginBottom: '0.75rem' }}>Create Your Profile</h3>
-              <p>Register and build your professional profile highlighting your skills and experience.</p>
+              <h3 style={{ marginBottom: '0.75rem' }}>Collect Data & Signatures</h3>
+              <p>We gather information from affected individuals across India to understand the full impact of unemployment.</p>
             </div>
             
             <div style={{ 
@@ -409,8 +711,8 @@ const SimpleApp: React.FC = () => {
               }}>
                 <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2563eb' }}>2</span>
               </div>
-              <h3 style={{ marginBottom: '0.75rem' }}>Explore Opportunities</h3>
-              <p>Browse through our extensive list of job openings across various industries.</p>
+              <h3 style={{ marginBottom: '0.75rem' }}>Present Evidence to Government</h3>
+              <p>We compile the data and stories into a comprehensive report for submission to government officials.</p>
             </div>
             
             <div style={{ 
@@ -435,8 +737,8 @@ const SimpleApp: React.FC = () => {
               }}>
                 <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2563eb' }}>3</span>
               </div>
-              <h3 style={{ marginBottom: '0.75rem' }}>Apply and Succeed</h3>
-              <p>Submit applications with ease and track your progress as you move toward your dream job.</p>
+              <h3 style={{ marginBottom: '0.75rem' }}>Advocate for Change</h3>
+              <p>We engage with policymakers to push for concrete action: job creation programs, unemployment benefits, and skill development initiatives.</p>
             </div>
           </div>
         </div>
@@ -450,22 +752,22 @@ const SimpleApp: React.FC = () => {
             flexDirection: 'column', 
             gap: '2rem',
             textAlign: 'center'
-          }} className="md:flex-row md:text-left">
+          }} className="responsive-grid md:flex-row md:text-left">
             <div style={{ flex: '1' }}>
-              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>10k+</p>
-              <p>Job Seekers</p>
+              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>85k+</p>
+              <p>Petition Signatures</p>
             </div>
             <div style={{ flex: '1' }}>
-              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>5k+</p>
-              <p>Job Listings</p>
+              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>27+</p>
+              <p>Districts Represented</p>
             </div>
             <div style={{ flex: '1' }}>
-              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>2k+</p>
-              <p>Successful Placements</p>
+              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>8+</p>
+              <p>MP Meetings Conducted</p>
             </div>
             <div style={{ flex: '1' }}>
-              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>500+</p>
-              <p>Partner Companies</p>
+              <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>15k+</p>
+              <p>Personal Stories Shared</p>
             </div>
           </div>
         </div>
@@ -483,9 +785,9 @@ const SimpleApp: React.FC = () => {
             alignItems: 'center', 
             textAlign: 'center'
           }}>
-            <h2 style={{ fontSize: '1.875rem', marginBottom: '1rem' }}>Ready to Start Your Journey?</h2>
+            <h2 style={{ fontSize: '1.875rem', marginBottom: '1rem' }}>Join the Movement for Change</h2>
             <p style={{ marginBottom: '2rem', maxWidth: '600px' }}>
-              Join thousands of job seekers who have found their ideal positions through our platform.
+              Your voice matters. Sign our petition and help us show the Indian government that urgent action is needed to address the unemployment crisis.
             </p>
             <button
               onClick={navigateToRegister}
@@ -501,7 +803,7 @@ const SimpleApp: React.FC = () => {
                 cursor: 'pointer'
               }}
             >
-              Register Today
+              Sign The Petition
             </button>
           </div>
         </div>
@@ -537,9 +839,9 @@ const SimpleApp: React.FC = () => {
                 lineHeight: '1.6',
                 color: 'rgba(255, 255, 255, 0.8)'
               }}>
-                Helping students and unemployed individuals navigate the global job market and find meaningful employment.
+                Advocating for government action to address India's unemployment crisis. We gather data and stories to push for concrete policy changes and support for those affected.
               </p>
-              <div style={{ 
+              <div className="social-icons" style={{ 
                 display: 'flex', 
                 gap: '1rem', 
                 marginTop: '1.5rem'
@@ -643,7 +945,7 @@ const SimpleApp: React.FC = () => {
                 borderBottom: '2px solid #4f84e8',
                 paddingBottom: '0.5rem',
                 display: 'inline-block'
-              }}>Quick Links</h4>
+              }}>Campaign</h4>
               <ul style={{ listStyle: 'none', padding: 0 }}>
                 <li style={{ marginBottom: '0.75rem' }}>
                   <a href="#" 
@@ -673,7 +975,7 @@ const SimpleApp: React.FC = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>›</span> Jobs
+                    <span style={{ marginRight: '0.5rem' }}>›</span> About Our Initiative
                   </a>
                 </li>
                 <li style={{ marginBottom: '0.75rem' }}>
@@ -688,7 +990,7 @@ const SimpleApp: React.FC = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>›</span> Resources
+                    <span style={{ marginRight: '0.5rem' }}>›</span> Impact Stories
                   </a>
                 </li>
                 <li>
@@ -703,7 +1005,7 @@ const SimpleApp: React.FC = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>›</span> About Us
+                    <span style={{ marginRight: '0.5rem' }}>›</span> Progress Updates
                   </a>
                 </li>
               </ul>
@@ -717,7 +1019,7 @@ const SimpleApp: React.FC = () => {
                 borderBottom: '2px solid #4f84e8',
                 paddingBottom: '0.5rem',
                 display: 'inline-block'
-              }}>Support</h4>
+              }}>Resources</h4>
               <ul style={{ listStyle: 'none', padding: 0 }}>
                 <li style={{ marginBottom: '0.75rem' }}>
                   <a href="#" 
@@ -731,7 +1033,7 @@ const SimpleApp: React.FC = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>›</span> FAQ
+                    <span style={{ marginRight: '0.5rem' }}>›</span> Unemployment Statistics
                   </a>
                 </li>
                 <li style={{ marginBottom: '0.75rem' }}>
@@ -746,7 +1048,7 @@ const SimpleApp: React.FC = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>›</span> Contact Us
+                    <span style={{ marginRight: '0.5rem' }}>›</span> Government Policies
                   </a>
                 </li>
                 <li style={{ marginBottom: '0.75rem' }}>
@@ -761,7 +1063,7 @@ const SimpleApp: React.FC = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>›</span> Privacy Policy
+                    <span style={{ marginRight: '0.5rem' }}>›</span> Economic Reports
                   </a>
                 </li>
                 <li>
@@ -776,7 +1078,7 @@ const SimpleApp: React.FC = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>›</span> Terms of Service
+                    <span style={{ marginRight: '0.5rem' }}>›</span> Media Articles
                   </a>
                 </li>
               </ul>
@@ -799,7 +1101,7 @@ const SimpleApp: React.FC = () => {
                   alignItems: 'flex-start'
                 }}>
                   <i className="fas fa-map-marker-alt" style={{ marginRight: '0.75rem', marginTop: '0.25rem' }}></i>
-                  <span>123 Job Street, Career City, Employment State, 12345</span>
+                  <span>123 Advocacy Street, New Delhi, India, 110001</span>
                 </li>
                 <li style={{ 
                   marginBottom: '0.75rem',
@@ -808,7 +1110,7 @@ const SimpleApp: React.FC = () => {
                   alignItems: 'center'
                 }}>
                   <i className="fas fa-phone-alt" style={{ marginRight: '0.75rem' }}></i>
-                  <span>+1 (555) 123-4567</span>
+                  <span>+91 98765 43210</span>
                 </li>
                 <li style={{ 
                   marginBottom: '0.75rem',
@@ -817,7 +1119,7 @@ const SimpleApp: React.FC = () => {
                   alignItems: 'center'
                 }}>
                   <i className="fas fa-envelope" style={{ marginRight: '0.75rem' }}></i>
-                  <span>info@jobsupportfe.com</span>
+                  <span>contact@jobsupportfe.com</span>
                 </li>
                 <li style={{ 
                   color: 'rgba(255, 255, 255, 0.8)',
@@ -825,7 +1127,7 @@ const SimpleApp: React.FC = () => {
                   alignItems: 'center'
                 }}>
                   <i className="fas fa-clock" style={{ marginRight: '0.75rem' }}></i>
-                  <span>Mon-Fri: 9AM - 5PM</span>
+                  <span>Mon-Fri: 9AM - 6PM</span>
                 </li>
               </ul>
             </div>
@@ -838,7 +1140,7 @@ const SimpleApp: React.FC = () => {
             color: 'rgba(255, 255, 255, 0.7)',
             fontSize: '0.875rem'
           }}>
-            <p>&copy; {new Date().getFullYear()} JobSupportFE. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} JobSupportFE - Advocating for India's Unemployed. All rights reserved.</p>
           </div>
         </div>
       </footer>
