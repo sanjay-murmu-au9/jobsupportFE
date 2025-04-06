@@ -1,5 +1,4 @@
 import React from 'react';
-import { twMerge } from 'tailwind-merge';
 
 interface SelectOption {
   value: string;
@@ -14,21 +13,39 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, helperText, options, className, ...props }, ref) => {
+  ({ label, error, helperText, options, ...props }, ref) => {
     return (
-      <div className="w-full">
+      <div style={{ width: '100%', marginBottom: '1rem' }}>
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label style={{ 
+            display: 'block', 
+            fontSize: '0.875rem', 
+            fontWeight: '500', 
+            color: '#374151', 
+            marginBottom: '0.25rem'
+          }}>
             {label}
           </label>
         )}
         <select
           ref={ref}
-          className={twMerge(
-            'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
-            error && 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500',
-            className
-          )}
+          style={{ 
+            display: 'block',
+            width: '100%',
+            padding: '0.5rem 0.75rem',
+            borderRadius: '0.375rem',
+            border: `1px solid ${error ? '#f87171' : '#d1d5db'}`,
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+            fontSize: '0.875rem',
+            color: error ? '#b91c1c' : '#1f2937',
+            backgroundColor: 'white',
+            appearance: 'none',
+            backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`,
+            backgroundPosition: 'right 0.5rem center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '1.5em 1.5em',
+            paddingRight: '2.5rem'
+          }}
           {...props}
         >
           <option value="">Select an option</option>
@@ -39,10 +56,10 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           ))}
         </select>
         {error && (
-          <p className="mt-1 text-sm text-red-600">{error}</p>
+          <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#dc2626' }}>{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+          <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#6b7280' }}>{helperText}</p>
         )}
       </div>
     );
