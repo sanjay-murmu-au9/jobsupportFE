@@ -4,9 +4,45 @@ import Input from './common/Input';
 import Select from './common/Select';
 import Textarea from './common/Textarea';
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  country: string;
+  city: string;
+  education: string;
+  employmentStatus: string;
+  skills: string;
+  experience: string;
+  resume: string | null;
+  agreeToTerms: boolean;
+}
+
+// API endpoint with fallback for CORS issues
+const API_ENDPOINT = "https://property-management-fu5c.onrender.com/api/campaigns";
+const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+
+const sendToApi = async (data: FormData, useCorsProxy: boolean = false): Promise<Response> => {
+  const endpoint = useCorsProxy ? `${CORS_PROXY}${API_ENDPOINT}` : API_ENDPOINT;
+
+  // Log what we're about to send
+  console.log(`Sending to ${endpoint} with payload:`, data);
+
+  return fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      ...(useCorsProxy ? { "X-Requested-With": "XMLHttpRequest" } : {})
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 // Campaign-focused registration form component with no login navigation
 const RegistrationForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
@@ -17,7 +53,7 @@ const RegistrationForm: React.FC = () => {
     employmentStatus: '',
     skills: '',
     experience: '',
-    resume: null as File | null,
+    resume: null,
     agreeToTerms: false
   });
 
@@ -26,11 +62,11 @@ const RegistrationForm: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const countryOptions = [
+    { value: 'in', label: 'India' },
     { value: 'us', label: 'United States' },
     { value: 'ca', label: 'Canada' },
     { value: 'uk', label: 'United Kingdom' },
     { value: 'au', label: 'Australia' },
-    { value: 'in', label: 'India' },
     { value: 'other', label: 'Other' }
   ];
 
@@ -85,7 +121,7 @@ const RegistrationForm: React.FC = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFormData(prev => ({ ...prev, resume: e.target.files![0] }));
+      setFormData(prev => ({ ...prev, resume: e.target.files![0].name }));
     }
   };
 
@@ -166,9 +202,47 @@ const RegistrationForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      // Prepare the data in exact format as required by API
+      const requestData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        country: formData.country,
+        city: formData.city,
+        education: formData.education,
+        employmentStatus: formData.employmentStatus,
+        skills: formData.skills,
+        experience: formData.experience,
+        resume: formData.resume || "test",
+        agreeToTerms: formData.agreeToTerms
+      };
+
+      console.log('Sending form data:', requestData);
+
+      // Try direct API call first
+      let response;
+      try {
+        response = await sendToApi(requestData);
+      } catch (error) {
+        console.log('Direct API call failed:', error);
+        console.log('Trying with CORS proxy...');
+        response = await sendToApi(requestData, true);
+      }
+
+      let responseData;
+      try {
+        responseData = await response.json();
+        console.log('Response data:', responseData);
+      } catch (error) {
+        console.error('Error parsing response:', error);
+        throw new Error('Invalid response from server');
+      }
+
+      if (!response.ok) {
+        throw new Error(responseData.message || `Registration failed with status ${response.status}`);
+      }
+
       // Reset form on success
       setFormData({
         firstName: '',
@@ -195,10 +269,25 @@ const RegistrationForm: React.FC = () => {
         setSuccessMessage('');
       }, 5000);
     } catch (error) {
-      // Handle specific error cases
       console.error("Registration error:", error);
+      let errorMessage = 'Failed to register. Please try again.';
+      
+      if (error instanceof Error) {
+        if (error.message.includes('Unable to connect')) {
+          errorMessage = 'Unable to connect to the server. Please check if the backend is running.';
+        } else if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Unable to connect to the server. Please check your internet connection or try again later.';
+        } else if (error.message.includes('Invalid response')) {
+          errorMessage = 'Server returned an invalid response. Please try again later.';
+        } else if (error.message.includes('CORS')) {
+          errorMessage = 'Cross-Origin Request Blocked. Please check if the backend is running and CORS is configured correctly.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       setErrors({ 
-        submit: 'Registration failed. Please check your information and try again.' 
+        submit: errorMessage
       });
       
       // Scroll to top to show error message
@@ -394,7 +483,7 @@ const RegistrationForm: React.FC = () => {
               </label>
               {formData.resume && (
                 <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#4b5563' }}>
-                  Selected file: {formData.resume.name}
+                  Selected file: {formData.resume}
                 </p>
               )}
             </div>
