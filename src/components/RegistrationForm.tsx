@@ -53,7 +53,7 @@ const RegistrationForm: React.FC = () => {
     employmentStatus: '',
     skills: '',
     experience: '',
-    resume: null,
+    resume: '',
     agreeToTerms: false
   });
 
@@ -94,7 +94,7 @@ const RegistrationForm: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error when field is edited
     if (errors[name]) {
       setErrors(prev => {
@@ -108,7 +108,7 @@ const RegistrationForm: React.FC = () => {
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setFormData(prev => ({ ...prev, [name]: checked }));
-    
+
     // Clear error when field is edited
     if (errors[name]) {
       setErrors(prev => {
@@ -127,11 +127,11 @@ const RegistrationForm: React.FC = () => {
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
-    
+
     // Required fields
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    
+
     // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -154,53 +154,53 @@ const RegistrationForm: React.FC = () => {
           'rediffmail.com',
           'yandex.com'
         ];
-        
+
         const emailDomain = formData.email.toLowerCase().split('@')[1];
         if (!allowedDomains.includes(emailDomain)) {
           newErrors.email = 'Please use an email from one of the popular providers: ' + allowedDomains.join(', ');
         }
       }
     }
-    
+
     // Phone validation for Indian numbers
     if (!formData.phone) {
       newErrors.phone = 'Phone number is required';
     } else {
       // Remove spaces and dashes for validation
       const cleanPhone = formData.phone.replace(/[\s-]/g, '');
-      
+
       // Check if it's a valid Indian mobile number
       // Should be 10 digits and start with 6, 7, 8, or 9
       if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
         newErrors.phone = 'Please enter a valid 10-digit Indian mobile number';
       }
     }
-    
+
     // Country is required
     if (!formData.country) {
       newErrors.country = 'Please select your country';
     }
-    
+
     // Employment status is required
     if (!formData.employmentStatus) {
       newErrors.employmentStatus = 'Please select your employment status';
     }
-    
+
     if (!formData.agreeToTerms) {
       newErrors.agreeToTerms = 'You must consent to join the campaign';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsSubmitting(true);
-    
+
     try {
       // Prepare the data in exact format as required by API
       const requestData = {
@@ -214,7 +214,7 @@ const RegistrationForm: React.FC = () => {
         employmentStatus: formData.employmentStatus,
         skills: formData.skills,
         experience: formData.experience,
-        resume: formData.resume || "test",
+        resume: formData.resume,
         agreeToTerms: formData.agreeToTerms
       };
 
@@ -255,15 +255,15 @@ const RegistrationForm: React.FC = () => {
         employmentStatus: '',
         skills: '',
         experience: '',
-        resume: null,
+        resume: '',
         agreeToTerms: false
       });
-      
+
       // Scroll to top to show success message
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      
+
       setSuccessMessage('Thank you for joining our campaign! Your voice will help make employment a national priority.');
-      
+
       // Clear success message after 5 seconds
       setTimeout(() => {
         setSuccessMessage('');
@@ -271,7 +271,7 @@ const RegistrationForm: React.FC = () => {
     } catch (error) {
       console.error("Registration error:", error);
       let errorMessage = 'Failed to register. Please try again.';
-      
+
       if (error instanceof Error) {
         if (error.message.includes('Unable to connect')) {
           errorMessage = 'Unable to connect to the server. Please check if the backend is running.';
@@ -285,11 +285,11 @@ const RegistrationForm: React.FC = () => {
           errorMessage = error.message;
         }
       }
-      
-      setErrors({ 
+
+      setErrors({
         submit: errorMessage
       });
-      
+
       // Scroll to top to show error message
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
@@ -302,7 +302,7 @@ const RegistrationForm: React.FC = () => {
       <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '1.5rem', textAlign: 'center' }}>
         Add Your Voice to the Campaign
       </h1>
-      
+
       {successMessage && (
         <div style={{
           backgroundColor: '#d1fae5',
@@ -314,7 +314,7 @@ const RegistrationForm: React.FC = () => {
           {successMessage}
         </div>
       )}
-      
+
       {errors.submit && (
         <div style={{
           backgroundColor: '#fee2e2',
@@ -326,7 +326,7 @@ const RegistrationForm: React.FC = () => {
           {errors.submit}
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit}>
         <div style={{ display: 'grid', gap: '1.5rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -338,7 +338,7 @@ const RegistrationForm: React.FC = () => {
               error={errors.firstName}
               required
             />
-            
+
             <Input
               label="Last Name"
               name="lastName"
@@ -348,7 +348,7 @@ const RegistrationForm: React.FC = () => {
               required
             />
           </div>
-          
+
           <Input
             label="Email"
             type="email"
@@ -360,7 +360,7 @@ const RegistrationForm: React.FC = () => {
             helperText="Use email from popular providers like Gmail, Yahoo, Hotmail, etc."
             required
           />
-          
+
           <Input
             label="Phone Number"
             type="tel"
@@ -372,7 +372,7 @@ const RegistrationForm: React.FC = () => {
             helperText="10-digit Indian mobile number starting with 6, 7, 8, or 9"
             required
           />
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <Select
               label="Country"
@@ -384,7 +384,7 @@ const RegistrationForm: React.FC = () => {
               helperText="Select your country"
               required
             />
-            
+
             <Input
               label="City"
               name="city"
@@ -393,7 +393,7 @@ const RegistrationForm: React.FC = () => {
               helperText="Optional"
             />
           </div>
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <Select
               label="Education Level"
@@ -403,7 +403,7 @@ const RegistrationForm: React.FC = () => {
               options={educationOptions}
               helperText="Optional"
             />
-            
+
             <Select
               label="Employment Status"
               name="employmentStatus"
@@ -415,7 +415,7 @@ const RegistrationForm: React.FC = () => {
               required
             />
           </div>
-          
+
           <Textarea
             label="Skills"
             name="skills"
@@ -426,7 +426,7 @@ const RegistrationForm: React.FC = () => {
             helperText="Skills that could contribute to the campaign"
             rows={3}
           />
-          
+
           <Textarea
             label="Tell Us Your Story"
             name="experience"
@@ -436,20 +436,20 @@ const RegistrationForm: React.FC = () => {
             helperText="This will help strengthen our message to policymakers"
             rows={4}
           />
-          
+
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '0.5rem', 
-              fontWeight: '500', 
-              fontSize: '0.875rem' 
+            <label style={{
+              display: 'block',
+              marginBottom: '0.5rem',
+              fontWeight: '500',
+              fontSize: '0.875rem'
             }}>
               Upload Supporting Documents (Optional)
             </label>
-            <div style={{ 
-              border: '1px dashed #d1d5db', 
-              borderRadius: '0.375rem', 
-              padding: '1.5rem', 
+            <div style={{
+              border: '1px dashed #d1d5db',
+              borderRadius: '0.375rem',
+              padding: '1.5rem',
               textAlign: 'center',
               backgroundColor: '#f9fafb'
             }}>
@@ -488,7 +488,7 @@ const RegistrationForm: React.FC = () => {
               )}
             </div>
           </div>
-          
+
           <div style={{ marginTop: '0.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
               <input
@@ -499,20 +499,20 @@ const RegistrationForm: React.FC = () => {
                 onChange={handleCheckboxChange}
                 style={{ marginTop: '0.25rem' }}
               />
-              <label 
-                htmlFor="agreeToTerms" 
-                style={{ 
-                  fontSize: '0.875rem', 
-                  color: errors.agreeToTerms ? '#dc2626' : '#4b5563' 
+              <label
+                htmlFor="agreeToTerms"
+                style={{
+                  fontSize: '0.875rem',
+                  color: errors.agreeToTerms ? '#dc2626' : '#4b5563'
                 }}
               >
                 I consent to my information being included in the petition to make employment a national priority. I understand my data may be shared with relevant government bodies and officials as part of this advocacy campaign.
               </label>
             </div>
             {errors.agreeToTerms && (
-              <p style={{ 
-                marginTop: '0.25rem', 
-                fontSize: '0.75rem', 
+              <p style={{
+                marginTop: '0.25rem',
+                fontSize: '0.75rem',
                 color: '#dc2626',
                 marginLeft: '1.5rem'
               }}>
@@ -520,7 +520,7 @@ const RegistrationForm: React.FC = () => {
               </p>
             )}
           </div>
-          
+
           <Button
             type="submit"
             variant="primary"
@@ -536,4 +536,4 @@ const RegistrationForm: React.FC = () => {
   );
 };
 
-export default RegistrationForm; 
+export default RegistrationForm;
