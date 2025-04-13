@@ -63,11 +63,11 @@ const RegistrationForm: React.FC = () => {
 
   const countryOptions = [
     { value: 'in', label: 'India' },
-    { value: 'us', label: 'United States' },
-    { value: 'ca', label: 'Canada' },
-    { value: 'uk', label: 'United Kingdom' },
-    { value: 'au', label: 'Australia' },
-    { value: 'other', label: 'Other' }
+    // { value: 'us', label: 'United States' },
+    // { value: 'ca', label: 'Canada' },
+    // { value: 'uk', label: 'United Kingdom' },
+    // { value: 'au', label: 'Australia' },
+    // { value: 'other', label: 'Other' }
   ];
 
   const educationOptions = [
