@@ -21,25 +21,32 @@ interface FormData {
 
 // API endpoint with fallback for CORS issues
 const API_ENDPOINT = "https://property-management-fu5c.onrender.com/api/campaigns";
-const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+// const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
 const sendToApi = async (data: FormData, useCorsProxy: boolean = false): Promise<Response> => {
-  const endpoint = useCorsProxy ? `${CORS_PROXY}${API_ENDPOINT}` : API_ENDPOINT;
+  // Create FormData object
+  const formData = new FormData();
+  
+  // Append all form fields
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      formData.append(key, value);
+    }
+  });
 
   // Log what we're about to send
-  console.log(`Sending to ${endpoint} with payload:`, data);
-
-  return fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      ...(useCorsProxy ? { "X-Requested-With": "XMLHttpRequest" } : {})
-    },
-    body: JSON.stringify(data),
-  });
-};
-
+  console.log(`Sending to ${API_ENDPOINT} with form data`);
+  
+  try {
+    return await fetch(API_ENDPOINT, {
+      method: "POST",
+      body: formData, // Send as FormData
+    });
+  } catch (error) {
+    console.error("Fetch error in sendToApi:", error);
+    throw error;
+  };
+}
 // Campaign-focused registration form component with no login navigation
 const RegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -53,7 +60,7 @@ const RegistrationForm: React.FC = () => {
     employmentStatus: '',
     skills: '',
     experience: '',
-    resume: '',
+    resume: null,
     agreeToTerms: false
   });
 
@@ -120,8 +127,17 @@ const RegistrationForm: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFormData(prev => ({ ...prev, resume: e.target.files![0].name }));
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setFormData(prev => ({
+          ...prev,
+          resume: base64String
+        }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -214,7 +230,7 @@ const RegistrationForm: React.FC = () => {
         employmentStatus: formData.employmentStatus,
         skills: formData.skills,
         experience: formData.experience,
-        resume: formData.resume,
+        resume: formData.resume || null,
         agreeToTerms: formData.agreeToTerms
       };
 
@@ -482,8 +498,17 @@ const RegistrationForm: React.FC = () => {
                 Choose File
               </label>
               {formData.resume && (
-                <p style={{ marginTop: '0.5rem', fontSize: '0.875rem', color: '#4b5563' }}>
+                <p style={{
+                  marginTop: '0.5rem',
+                  fontSize: '0.875rem',
+                  color: '#4b5563',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '300px', // or a specific width like '300px'
+                 }}>
                   Selected file: {formData.resume}
+                  {/* {Selected file: {formData.resume.split('\\').pop().split('/').pop()} */}
                 </p>
               )}
             </div>
