@@ -4,7 +4,7 @@ import Input from './common/Input';
 import Select from './common/Select';
 import Textarea from './common/Textarea';
 
-interface FormData {
+interface CampaignFormData {
   firstName: string;
   lastName: string;
   email: string;
@@ -19,28 +19,40 @@ interface FormData {
   agreeToTerms: boolean;
 }
 
-// API endpoint with fallback for CORS issues
-const API_ENDPOINT = "https://property-management-fu5c.onrender.com/api/campaigns";
-// const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+// Get API URL from environment variables with fallback
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-const sendToApi = async (data: FormData, useCorsProxy: boolean = false): Promise<Response> => {
+// API endpoints - use relative URLs in development (for proxy) and full URLs in production
+const isDevelopment = window.location.hostname === 'localhost';
+const API_ENDPOINT = isDevelopment ? "/api/campaigns" : `${API_BASE}/api/campaigns`;
+const UPLOAD_ENDPOINT = isDevelopment ? "/api/files/upload" : `${API_BASE}/api/files/upload`;
+
+// Backend is available and running
+const IS_BACKEND_AVAILABLE = true;
+
+const sendToApi = async (data: Record<string, any>, useCorsProxy: boolean = false): Promise<Response> => {
   // Create FormData object
   const formData = new FormData();
   
   // Append all form fields
   Object.entries(data).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {
-      formData.append(key, value);
+      formData.append(key, String(value));
     }
   });
 
   // Log what we're about to send
   console.log(`Sending to ${API_ENDPOINT} with form data`);
+  console.log('Form data entries:');
+  for (const pair of formData.entries()) {
+    console.log(`${pair[0]}: ${pair[1]}`);
+  }
   
   try {
     return await fetch(API_ENDPOINT, {
       method: "POST",
       body: formData, // Send as FormData
+      // No need for CORS headers when using proxy
     });
   } catch (error) {
     console.error("Fetch error in sendToApi:", error);
@@ -49,7 +61,7 @@ const sendToApi = async (data: FormData, useCorsProxy: boolean = false): Promise
 }
 // Campaign-focused registration form component with no login navigation
 const RegistrationForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<CampaignFormData>({
     firstName: '',
     lastName: '',
     email: '',
@@ -66,6 +78,7 @@ const RegistrationForm: React.FC = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFileUploading, setIsFileUploading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
   const countryOptions = [
@@ -126,18 +139,103 @@ const RegistrationForm: React.FC = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
+      try {
+        // Only use local fallback if backend is not available
+        if (!IS_BACKEND_AVAILABLE) {
+          // Just store the file name for now as a fallback
+          const fileName = file.name;
+          setFormData(prev => ({
+            ...prev,
+            resume: fileName
+          }));
+          console.log('Development mode: File name stored without uploading');
+          return;
+        }
+
+        // Create FormData object for file upload
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+        
+        // Set a loading state
+        setIsFileUploading(true);
+        
+        try {
+          // Upload the file to the separate upload endpoint with timeout
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+          
+          console.log('Attempting to upload file to:', UPLOAD_ENDPOINT);
+          const uploadResponse = await fetch(UPLOAD_ENDPOINT, {
+            method: 'POST',
+            body: uploadFormData,
+            signal: controller.signal
+            // No need for CORS headers when using proxy
+          });
+          
+          clearTimeout(timeoutId);
+          
+          if (!uploadResponse.ok) {
+            throw new Error(`Upload failed with status ${uploadResponse.status}`);
+          }
+          
+          // Parse the response to get the file URL
+          const uploadResult = await uploadResponse.json();
+          console.log('Upload response:', uploadResult);
+          
+          // Check if we have a file URL in the response
+          if (uploadResult.fileUrl) {
+            // Store the file URL in the form state
+            setFormData(prev => ({
+              ...prev,
+              resume: uploadResult.fileUrl
+            }));
+            console.log('File uploaded successfully, URL stored for form submission');
+          } else {
+            throw new Error('No file URL in response');
+          }
+        } catch (error: any) {
+          console.error('Error uploading file:', error);
+          console.error('Error details:', {
+            message: error.message,
+            name: error.name,
+            stack: error.stack,
+            endpoint: UPLOAD_ENDPOINT
+          });
+          
+          // Handle specific error types
+          let errorMessage = 'Failed to upload file. Please try again.';
+          if (error.name === 'AbortError') {
+            errorMessage = 'Upload timed out. Please try again or use a smaller file.';
+          } else if (error.message.includes('Failed to fetch')) {
+            errorMessage = `Cannot connect to server at ${UPLOAD_ENDPOINT}. Please check your connection and server status.`;
+          } else if (error.message.includes('NetworkError')) {
+            errorMessage = 'Network error occurred. This might be due to CORS restrictions.';
+          }
+          
+          setErrors(prev => ({
+            ...prev,
+            resume: errorMessage
+          }));
+          
+          // Still store the file name for UI feedback
+          setFormData(prev => ({
+            ...prev,
+            resume: file.name + ' (local only)'
+          }));
+        } finally {
+          setIsFileUploading(false);
+        }
+      } catch (mainError) {
+        console.error('Main error in file handling:', mainError);
+        // Fallback to just showing the file name
         setFormData(prev => ({
           ...prev,
-          resume: base64String
+          resume: file.name + ' (local only)'
         }));
-      };
-      reader.readAsDataURL(file);
+      }
     }
   };
 
@@ -230,11 +328,12 @@ const RegistrationForm: React.FC = () => {
         employmentStatus: formData.employmentStatus,
         skills: formData.skills,
         experience: formData.experience,
-        resume: formData.resume || null,
+        resume: formData.resume || '',
         agreeToTerms: formData.agreeToTerms
       };
 
       console.log('Sending form data:', requestData);
+      console.log('Resume URL:', formData.resume);
 
       // Try direct API call first
       let response;
@@ -505,10 +604,16 @@ const RegistrationForm: React.FC = () => {
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  maxWidth: '300px', // or a specific width like '300px'
+                  maxWidth: '300px'
                  }}>
-                  Selected file: {formData.resume}
-                  {/* {Selected file: {formData.resume.split('\\').pop().split('/').pop()} */}
+                  {/* Check if resume is a URL or just a filename */}
+                  {formData.resume.startsWith('http') ? (
+                    <>
+                      File uploaded: <a href={formData.resume} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>View File</a>
+                    </>
+                  ) : (
+                    <>Selected file: {formData.resume}</>
+                  )}
                 </p>
               )}
             </div>
