@@ -3,6 +3,7 @@ import Button from './common/Button';
 import Input from './common/Input';
 import Select from './common/Select';
 import Textarea from './common/Textarea';
+import './RegistrationForm.css';
 
 interface CampaignFormData {
   firstName: string;
@@ -26,6 +27,7 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const isDevelopment = window.location.hostname === 'localhost';
 const API_ENDPOINT = isDevelopment ? "/api/campaigns" : `${API_BASE}/api/campaigns`;
 const UPLOAD_ENDPOINT = isDevelopment ? "/api/files/upload" : `${API_BASE}/api/files/upload`;
+const PARSE_RESUME_ENDPOINT = isDevelopment ? "/api/campaign/parse-resume" : `${API_BASE}/api/campaign/parse-resume`;
 
 // Backend is available and running
 const IS_BACKEND_AVAILABLE = true;
@@ -33,7 +35,7 @@ const IS_BACKEND_AVAILABLE = true;
 const sendToApi = async (data: Record<string, any>, useCorsProxy: boolean = false): Promise<Response> => {
   // Create FormData object
   const formData = new FormData();
-  
+
   // Append all form fields
   Object.entries(data).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {
@@ -47,7 +49,7 @@ const sendToApi = async (data: Record<string, any>, useCorsProxy: boolean = fals
   for (const pair of formData.entries()) {
     console.log(`${pair[0]}: ${pair[1]}`);
   }
-  
+
   try {
     return await fetch(API_ENDPOINT, {
       method: "POST",
@@ -81,13 +83,54 @@ const RegistrationForm: React.FC = () => {
   const [isFileUploading, setIsFileUploading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
+  // Function to parse resume and fill form fields
+  const parseResumeAndFillForm = async (resumeUrl: string): Promise<void> => {
+    try {
+      console.log('Attempting to parse resume:', resumeUrl);
+
+      // Create request to parse resume
+      const parseResponse = await fetch(PARSE_RESUME_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ resumeUrl })
+      });
+
+      if (!parseResponse.ok) {
+        throw new Error(`Resume parsing failed with status ${parseResponse.status}`);
+      }
+
+      // Get parsed data
+      const parsedData = await parseResponse.json();
+      console.log('Resume parsed successfully:', parsedData);
+
+      // Update form with parsed data
+      if (parsedData && parsedData.success && parsedData.data) {
+        // Access the nested data structure
+        const resumeData = parsedData.data;
+        console.log('Updating form with resume data:', resumeData);
+
+        setFormData(prev => ({
+          ...prev,
+          firstName: resumeData.firstName || prev.firstName,
+          lastName: resumeData.lastName || prev.lastName,
+          email: resumeData.email || prev.email,
+          phone: resumeData.phone || prev.phone,
+          city: resumeData.city || prev.city,
+          education: resumeData.education || prev.education,
+          skills: resumeData.skills || prev.skills,
+          experience: resumeData.experience || prev.experience,
+        }));
+      }
+    } catch (error) {
+      console.error('Error parsing resume:', error);
+      throw error;
+    }
+  };
+
   const countryOptions = [
     { value: 'in', label: 'India' },
-    // { value: 'us', label: 'United States' },
-    // { value: 'ca', label: 'Canada' },
-    // { value: 'uk', label: 'United Kingdom' },
-    // { value: 'au', label: 'Australia' },
-    // { value: 'other', label: 'Other' }
   ];
 
   const educationOptions = [
@@ -158,33 +201,32 @@ const RegistrationForm: React.FC = () => {
         // Create FormData object for file upload
         const uploadFormData = new FormData();
         uploadFormData.append('file', file);
-        
+
         // Set a loading state
         setIsFileUploading(true);
-        
+
         try {
           // Upload the file to the separate upload endpoint with timeout
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-          
+
           console.log('Attempting to upload file to:', UPLOAD_ENDPOINT);
           const uploadResponse = await fetch(UPLOAD_ENDPOINT, {
             method: 'POST',
             body: uploadFormData,
             signal: controller.signal
-            // No need for CORS headers when using proxy
           });
-          
+
           clearTimeout(timeoutId);
-          
+
           if (!uploadResponse.ok) {
             throw new Error(`Upload failed with status ${uploadResponse.status}`);
           }
-          
+
           // Parse the response to get the file URL
           const uploadResult = await uploadResponse.json();
           console.log('Upload response:', uploadResult);
-          
+
           // Check if we have a file URL in the response
           if (uploadResult.fileUrl) {
             // Store the file URL in the form state
@@ -193,10 +235,17 @@ const RegistrationForm: React.FC = () => {
               resume: uploadResult.fileUrl
             }));
             console.log('File uploaded successfully, URL stored for form submission');
+
+            // Try to parse resume and autofill form fields
+            try {
+              await parseResumeAndFillForm(uploadResult.fileUrl);
+            } catch (parseError) {
+              console.error('Error parsing resume:', parseError);
+            }
           } else {
             throw new Error('No file URL in response');
           }
-        } catch (error: any) {
+        } catch (error:any) {
           console.error('Error uploading file:', error);
           console.error('Error details:', {
             message: error.message,
@@ -204,8 +253,7 @@ const RegistrationForm: React.FC = () => {
             stack: error.stack,
             endpoint: UPLOAD_ENDPOINT
           });
-          
-          // Handle specific error types
+
           let errorMessage = 'Failed to upload file. Please try again.';
           if (error.name === 'AbortError') {
             errorMessage = 'Upload timed out. Please try again or use a smaller file.';
@@ -214,13 +262,12 @@ const RegistrationForm: React.FC = () => {
           } else if (error.message.includes('NetworkError')) {
             errorMessage = 'Network error occurred. This might be due to CORS restrictions.';
           }
-          
+
           setErrors(prev => ({
             ...prev,
             resume: errorMessage
           }));
-          
-          // Still store the file name for UI feedback
+
           setFormData(prev => ({
             ...prev,
             resume: file.name + ' (local only)'
@@ -230,7 +277,6 @@ const RegistrationForm: React.FC = () => {
         }
       } catch (mainError) {
         console.error('Main error in file handling:', mainError);
-        // Fallback to just showing the file name
         setFormData(prev => ({
           ...prev,
           resume: file.name + ' (local only)'
@@ -242,20 +288,16 @@ const RegistrationForm: React.FC = () => {
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // Required fields
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else {
-      // More comprehensive email validation regex
       const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!emailRegex.test(formData.email.toLowerCase())) {
         newErrors.email = 'Please enter a valid email address';
       } else {
-        // Check if email domain is from the top 10 most popular domains
         const allowedDomains = [
           'gmail.com',
           'yahoo.com',
@@ -276,26 +318,19 @@ const RegistrationForm: React.FC = () => {
       }
     }
 
-    // Phone validation for Indian numbers
     if (!formData.phone) {
       newErrors.phone = 'Phone number is required';
     } else {
-      // Remove spaces and dashes for validation
       const cleanPhone = formData.phone.replace(/[\s-]/g, '');
-
-      // Check if it's a valid Indian mobile number
-      // Should be 10 digits and start with 6, 7, 8, or 9
       if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
         newErrors.phone = 'Please enter a valid 10-digit Indian mobile number';
       }
     }
 
-    // Country is required
     if (!formData.country) {
       newErrors.country = 'Please select your country';
     }
 
-    // Employment status is required
     if (!formData.employmentStatus) {
       newErrors.employmentStatus = 'Please select your employment status';
     }
@@ -316,7 +351,6 @@ const RegistrationForm: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Prepare the data in exact format as required by API
       const requestData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -335,7 +369,6 @@ const RegistrationForm: React.FC = () => {
       console.log('Sending form data:', requestData);
       console.log('Resume URL:', formData.resume);
 
-      // Try direct API call first
       let response;
       try {
         response = await sendToApi(requestData);
@@ -358,7 +391,6 @@ const RegistrationForm: React.FC = () => {
         throw new Error(responseData.message || `Registration failed with status ${response.status}`);
       }
 
-      // Reset form on success
       setFormData({
         firstName: '',
         lastName: '',
@@ -374,12 +406,10 @@ const RegistrationForm: React.FC = () => {
         agreeToTerms: false
       });
 
-      // Scroll to top to show success message
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
       setSuccessMessage('Thank you for joining our campaign! Your voice will help make employment a national priority.');
 
-      // Clear success message after 5 seconds
       setTimeout(() => {
         setSuccessMessage('');
       }, 5000);
@@ -405,7 +435,6 @@ const RegistrationForm: React.FC = () => {
         submit: errorMessage
       });
 
-      // Scroll to top to show error message
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSubmitting(false);
@@ -413,38 +442,26 @@ const RegistrationForm: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' }}>
-      <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '1.5rem', textAlign: 'center' }}>
+    <div className="registration-form-container">
+      <h1 className="registration-form-title">
         Add Your Voice to the Campaign
       </h1>
 
       {successMessage && (
-        <div style={{
-          backgroundColor: '#d1fae5',
-          borderRadius: '0.375rem',
-          padding: '1rem',
-          marginBottom: '1.5rem',
-          color: '#065f46'
-        }}>
+        <div className="form-alert form-alert--success">
           {successMessage}
         </div>
       )}
 
       {errors.submit && (
-        <div style={{
-          backgroundColor: '#fee2e2',
-          borderRadius: '0.375rem',
-          padding: '1rem',
-          marginBottom: '1.5rem',
-          color: '#b91c1c'
-        }}>
+        <div className="form-alert form-alert--error">
           {errors.submit}
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'grid', gap: '1.5rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div className="form-grid">
+          <div className="form-row">
             <Input
               label="First Name"
               name="firstName"
@@ -488,7 +505,7 @@ const RegistrationForm: React.FC = () => {
             required
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-row">
             <Select
               label="Country"
               name="country"
@@ -509,7 +526,7 @@ const RegistrationForm: React.FC = () => {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-row">
             <Select
               label="Education Level"
               name="education"
@@ -553,25 +570,14 @@ const RegistrationForm: React.FC = () => {
           />
 
           <div>
-            <label style={{
-              display: 'block',
-              marginBottom: '0.5rem',
-              fontWeight: '500',
-              fontSize: '0.875rem'
-            }}>
+            <label className="file-upload-label">
               Upload Supporting Documents (Optional)
             </label>
-            <div style={{
-              border: '1px dashed #d1d5db',
-              borderRadius: '0.375rem',
-              padding: '1.5rem',
-              textAlign: 'center',
-              backgroundColor: '#f9fafb'
-            }}>
-              <p style={{ marginBottom: '0.5rem', color: '#4b5563' }}>
+            <div className="file-upload-container">
+              <p className="mb-2 text-gray-600">
                 Attach your resume or any relevant documents
               </p>
-              <p style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '1rem' }}>
+              <p className="text-xs text-gray-500 mb-4">
                 You can upload your resume, degree certificates, or other documents that support your campaign participation.
               </p>
               <input
@@ -579,87 +585,68 @@ const RegistrationForm: React.FC = () => {
                 id="resume"
                 name="resume"
                 onChange={handleFileChange}
-                style={{ display: 'none' }}
+                className="hidden"
               />
               <label
                 htmlFor="resume"
-                style={{
-                  backgroundColor: '#e5e7eb',
-                  color: '#374151',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.375rem',
-                  cursor: 'pointer',
-                  display: 'inline-block',
-                  fontWeight: '500',
-                  fontSize: '0.875rem'
-                }}
+                className="file-upload-button"
               >
                 Choose File
               </label>
               {formData.resume && (
-                <p style={{
-                  marginTop: '0.5rem',
-                  fontSize: '0.875rem',
-                  color: '#4b5563',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  maxWidth: '300px'
-                 }}>
-                  {/* Check if resume is a URL or just a filename */}
+                <p className="file-name">
                   {formData.resume.startsWith('http') ? (
                     <>
-                      File uploaded: <a href={formData.resume} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>View File</a>
+                      File uploaded: <a href={formData.resume} target="_blank" rel="noopener noreferrer" className="file-link">View File</a>
                     </>
                   ) : (
                     <>Selected file: {formData.resume}</>
                   )}
                 </p>
               )}
+              {isFileUploading && (
+                <p className="file-upload-loading">Uploading file, please wait...</p>
+              )}
+              {errors.resume && (
+                <p className="file-upload-error">{errors.resume}</p>
+              )}
             </div>
           </div>
 
-          <div style={{ marginTop: '0.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+          <div>
+            <div className="terms-container">
               <input
                 type="checkbox"
                 id="agreeToTerms"
                 name="agreeToTerms"
                 checked={formData.agreeToTerms}
                 onChange={handleCheckboxChange}
-                style={{ marginTop: '0.25rem' }}
+                className="terms-checkbox"
               />
               <label
                 htmlFor="agreeToTerms"
-                style={{
-                  fontSize: '0.875rem',
-                  color: errors.agreeToTerms ? '#dc2626' : '#4b5563'
-                }}
+                className={`terms-label ${errors.agreeToTerms ? 'terms-label--error' : ''}`}
               >
                 I consent to my information being included in the petition to make employment a national priority. I understand my data may be shared with relevant government bodies and officials as part of this advocacy campaign.
               </label>
             </div>
             {errors.agreeToTerms && (
-              <p style={{
-                marginTop: '0.25rem',
-                fontSize: '0.75rem',
-                color: '#dc2626',
-                marginLeft: '1.5rem'
-              }}>
+              <p className="terms-error">
                 {errors.agreeToTerms}
               </p>
             )}
           </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            isLoading={isSubmitting}
-            fullWidth
-            style={{ marginTop: '1.5rem' }}
-          >
-            {isSubmitting ? 'Submitting...' : 'Join the Campaign'}
-          </Button>
+          <div className="submit-button-container">
+            <Button
+              type="submit"
+              variant="primary"
+              isLoading={isSubmitting}
+              fullWidth
+            >
+              {isSubmitting ? 'Submitting...' : 'Join the Campaign'}
+            </Button>
+          </div>
         </div>
       </form>
     </div>
