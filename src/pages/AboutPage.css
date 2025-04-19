@@ -1,0 +1,279 @@
+/* AboutPage.css - Styles for the About page */
+
+.about-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.about-content {
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 84rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-header {
+  text-align: center;
+}
+
+.about-icon-container {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.about-icon-bg {
+  display: inline-block;
+  padding: 0.75rem;
+  border-radius: 9999px;
+  background-color: #dbeafe;
+  margin-right: 0.75rem;
+}
+
+.about-development-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.about-badge-dot {
+  margin-right: 0.375rem;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  background-color: #f59e0b;
+}
+
+.about-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.about-description {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  color: #4b5563;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-divider {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  width: 6rem;
+  height: 0.25rem;
+  border-radius: 9999px;
+  background-color: #3b82f6;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-button-group {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .about-button-group {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+}
+
+.about-primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  color: white;
+  background-color: #3b82f6;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.about-primary-button:hover {
+  background-color: #2563eb;
+}
+
+.about-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  color: #374151;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.about-secondary-button:hover {
+  background-color: #f9fafb;
+}
+
+.about-card {
+  margin-top: 4rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #fef3c7;
+}
+
+.about-card-header {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+@media (min-width: 640px) {
+  .about-card-header {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+.about-header-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: #f59e0b;
+  margin-right: 0.5rem;
+}
+
+.about-header-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.about-header-badge {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.about-card-subtitle {
+  margin-top: 0.25rem;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  padding: 0.5rem 1rem;
+}
+
+.about-card-content {
+  padding: 1.25rem;
+}
+
+.about-text-strong {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.about-text-paragraph {
+  margin-bottom: 1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.about-text-paragraph-mt {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.about-cta-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.375rem;
+}
+
+.about-cta-heading {
+  display: flex;
+  align-items: center;
+  color: #1d4ed8;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.about-cta-icon {
+  height: 0.5rem;
+  width: 0.5rem;
+  min-width: 0.5rem;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  transform: scale(0.7);
+}
+
+.about-cta-text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.about-progress-container {
+  margin-top: 1rem;
+}
+
+.about-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.about-progress-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #2563eb;
+}
+
+.about-progress-value {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.about-progress-bar-bg {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 0.375rem;
+}
+
+.about-progress-bar {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: #2563eb;
+}

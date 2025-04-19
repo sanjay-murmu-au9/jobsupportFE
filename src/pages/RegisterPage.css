@@ -1,0 +1,7 @@
+/* RegisterPage.css - Styles for the Registration page */
+
+.register-page-container {
+  padding: 6rem 0 2rem 0;
+  background-color: #f7f9fc;
+  min-height: calc(100vh - 4rem);
+}

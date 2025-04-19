@@ -1,28 +1,41 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import RegistrationForm from '../components/RegistrationForm';
+import './RegisterPage.css';
 
 interface RegisterPageProps {
   onNavigateHome?: () => void;
   onNavigateRegister?: () => void;
-  // Login removed as not relevant for campaign platform
+  onNavigateStories?: () => void;
+  onNavigateResources?: () => void;
+  onNavigateAbout?: () => void;
+  onNavigateLogin?: () => void;
 }
 
 const RegisterPage: React.FC<RegisterPageProps> = ({
   onNavigateHome,
-  onNavigateRegister
+  onNavigateRegister,
+  onNavigateStories,
+  onNavigateResources,
+  onNavigateAbout,
+  onNavigateLogin
 }) => {
   return (
     <div>
       <Navbar 
         onNavigateHome={onNavigateHome}
         onNavigateRegister={onNavigateRegister}
+        onNavigateStories={onNavigateStories}
+        onNavigateResources={onNavigateResources}
+        onNavigateAbout={onNavigateAbout}
+        onNavigateLogin={onNavigateLogin}
+        currentPage="register"
       />
-      <div style={{ padding: '6rem 0 2rem 0', backgroundColor: '#f7f9fc', minHeight: 'calc(100vh - 4rem)' }}>
+      <div className="register-page-container">
         <RegistrationForm />
       </div>
     </div>
   );
 };
 
-export default RegisterPage; 
+export default RegisterPage;

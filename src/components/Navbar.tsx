@@ -28,6 +28,8 @@ const Navbar: React.FC<NavbarProps> = ({
     if (callback) {
       e.preventDefault();
       callback();
+      // Close the mobile menu whenever a navigation link is clicked
+      setIsMobileMenuOpen(false);
     }
   };
 
@@ -168,4 +170,4 @@ const Navbar: React.FC<NavbarProps> = ({
   );
 };
 
-export default Navbar; 
+export default Navbar;
