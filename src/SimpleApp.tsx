@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import RegisterPage from './pages/RegisterPage';
+import AnimatedStatCard from './components/common/AnimatedStatCard';
 import './SimpleApp.css';
 import './styles.css';
 
@@ -22,7 +23,7 @@ const SimpleApp: React.FC = () => {
 
   if (currentPage === 'register') {
     return (
-      <RegisterPage 
+      <RegisterPage
         onNavigateHome={navigateToHome}
         onNavigateRegister={navigateToRegister}
         onNavigateStories={navigateToStories}
@@ -36,7 +37,7 @@ const SimpleApp: React.FC = () => {
   if (currentPage === 'stories') {
     return (
       <div className="placeholder-page">
-        <Navbar 
+        <Navbar
           onNavigateHome={navigateToHome}
           onNavigateRegister={navigateToRegister}
           onNavigateStories={navigateToStories}
@@ -66,13 +67,13 @@ const SimpleApp: React.FC = () => {
             </p>
             <div className="divider"></div>
             <div className="button-group">
-              <button 
+              <button
                 onClick={navigateToRegister}
                 className="primary-button"
               >
                 Be an Early Contributor
               </button>
-              <button 
+              <button
                 onClick={navigateToHome}
                 className="secondary-button"
               >
@@ -80,7 +81,7 @@ const SimpleApp: React.FC = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="info-card">
             <div className="card-header">
               <svg className="header-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -145,7 +146,7 @@ const SimpleApp: React.FC = () => {
   if (currentPage === 'resources') {
     return (
       <div className="placeholder-page">
-        <Navbar 
+        <Navbar
           onNavigateHome={navigateToHome}
           onNavigateRegister={navigateToRegister}
           onNavigateStories={navigateToStories}
@@ -175,13 +176,13 @@ const SimpleApp: React.FC = () => {
             </p>
             <div className="divider"></div>
             <div className="button-group">
-              <button 
+              <button
                 onClick={navigateToRegister}
                 className="primary-button"
               >
                 Join to Get Early Access
               </button>
-              <button 
+              <button
                 onClick={navigateToHome}
                 className="secondary-button"
               >
@@ -189,7 +190,7 @@ const SimpleApp: React.FC = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="resource-grid">
             <div className="resource-card">
               <div className="resource-content">
@@ -217,7 +218,7 @@ const SimpleApp: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="resource-card">
               <div className="resource-content">
                 <div className="resource-icon-container">
@@ -244,7 +245,7 @@ const SimpleApp: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="resource-card">
               <div className="resource-content">
                 <div className="resource-icon-container">
@@ -272,7 +273,7 @@ const SimpleApp: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="info-card">
             <div className="card-header">
               <svg className="header-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -306,7 +307,7 @@ const SimpleApp: React.FC = () => {
   if (currentPage === 'about') {
     return (
       <div className="placeholder-page">
-        <Navbar 
+        <Navbar
           onNavigateHome={navigateToHome}
           onNavigateRegister={navigateToRegister}
           onNavigateStories={navigateToStories}
@@ -336,13 +337,13 @@ const SimpleApp: React.FC = () => {
             </p>
             <div className="divider"></div>
             <div className="button-group">
-              <button 
+              <button
                 onClick={navigateToRegister}
                 className="primary-button"
               >
                 Join Our Growing Movement
               </button>
-              <button 
+              <button
                 onClick={navigateToHome}
                 className="secondary-button"
               >
@@ -350,7 +351,7 @@ const SimpleApp: React.FC = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="info-card">
             <div className="card-header">
               <svg className="header-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -401,7 +402,7 @@ const SimpleApp: React.FC = () => {
 
   return (
     <div>
-      <Navbar 
+      <Navbar
         onNavigateHome={navigateToHome}
         onNavigateRegister={navigateToRegister}
         onNavigateStories={navigateToStories}
@@ -415,26 +416,27 @@ const SimpleApp: React.FC = () => {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Making Employment a National Priority for India
+              {/* Making Employment a National Priority for India */}
+              India’s Jobs Market Is Collapsing—5.2 Million Lives at Danger!
             </h1>
             <p className="hero-description">
-              The unemployment crisis in India has reached critical levels. Over <strong>5.2 million</strong> workers 
-              have lost their jobs in recent years, with <strong>78%</strong> struggling to meet basic needs. 
+              The unemployment crisis in India has reached critical levels. Over <strong>5.2 million</strong> workers
+              have lost their jobs in recent years, with <strong>78%</strong> struggling to meet basic needs.
               We're building a coalition to petition the Indian government for meaningful support and new job opportunities.
             </p>
             <div className="stats-grid">
-              <div className="stat-card">
-                <p className="stat-value">56%</p>
-                <p className="stat-label">youth unemployment rate in certain sectors</p>
-              </div>
-              <div className="stat-card">
-                <p className="stat-value">83%</p>
-                <p className="stat-label">faced salary cuts or delayed payments</p>
-              </div>
-              <div className="stat-card">
-                <p className="stat-value">72%</p>
-                <p className="stat-label">unable to pay EMIs and loan installments</p>
-              </div>
+              <AnimatedStatCard
+                value={56}
+                label="youth unemployment rate in certain sectors"
+              />
+              <AnimatedStatCard
+                value={83}
+                label="faced salary cuts or delayed payments"
+              />
+              <AnimatedStatCard
+                value={72}
+                label="unable to pay EMIs and loan installments"
+              />
             </div>
             <button
               onClick={navigateToRegister}
@@ -453,12 +455,12 @@ const SimpleApp: React.FC = () => {
               Register to Strengthen Our Collective Voice
             </h2>
             <p className="campaign-description">
-              By registering with us, you help strengthen our petition to the Indian government 
-              for unemployment benefits, skill development programs, and new job creation initiatives. 
+              By registering with us, you help strengthen our petition to the Indian government
+              for unemployment benefits, skill development programs, and new job creation initiatives.
               Together, we can make the government take action on this critical issue.
             </p>
           </div>
-          
+
           <div className="registration-card">
             <h3 className="registration-title">Join thousands of Indians fighting for change</h3>
             <p className="registration-description">
@@ -485,7 +487,7 @@ const SimpleApp: React.FC = () => {
               Our three-step approach to advocate for government action on unemployment
             </p>
           </div>
-          
+
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">
@@ -494,7 +496,7 @@ const SimpleApp: React.FC = () => {
               <h3 className="feature-title">Collect Data & Signatures</h3>
               <p className="feature-description">We gather information from affected individuals across India to understand the full impact of unemployment.</p>
             </div>
-            
+
             <div className="feature-card">
               <div className="feature-icon">
                 <span className="feature-number">2</span>
@@ -502,7 +504,7 @@ const SimpleApp: React.FC = () => {
               <h3 className="feature-title">Present Evidence to Government</h3>
               <p className="feature-description">We compile the data and stories into a comprehensive report for submission to government officials.</p>
             </div>
-            
+
             <div className="feature-card">
               <div className="feature-icon">
                 <span className="feature-number">3</span>
@@ -579,8 +581,8 @@ const SimpleApp: React.FC = () => {
               <h4 className="footer-heading">Campaign</h4>
               <ul className="footer-links">
                 <li className="footer-link-item">
-                  <a href="#" 
-                    onClick={(e) => { e.preventDefault(); navigateToHome(); }} 
+                  <a href="#"
+                    onClick={(e) => { e.preventDefault(); navigateToHome(); }}
                     className="footer-link"
                   >
                     <span className="footer-link-arrow">›</span> Home

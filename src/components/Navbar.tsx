@@ -10,8 +10,8 @@ interface NavbarProps {
   currentPage?: 'home' | 'register' | 'stories' | 'resources' | 'about';
 }
 
-const Navbar: React.FC<NavbarProps> = ({ 
-  onNavigateHome, 
+const Navbar: React.FC<NavbarProps> = ({
+  onNavigateHome,
   onNavigateRegister,
   onNavigateStories,
   onNavigateResources,
@@ -22,7 +22,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleNavigation = (
-    e: React.MouseEvent<HTMLAnchorElement>, 
+    e: React.MouseEvent<HTMLAnchorElement>,
     callback?: () => void
   ) => {
     if (callback) {
@@ -37,8 +37,8 @@ const Navbar: React.FC<NavbarProps> = ({
     <nav className="navbar">
       {/* Hidden link that uses onNavigateLogin to satisfy TypeScript */}
       {onNavigateLogin && (
-        <a 
-          href="#" 
+        <a
+          href="#"
           onClick={(e) => handleNavigation(e, onNavigateLogin)}
           style={{ display: 'none' }}
         >
@@ -48,39 +48,39 @@ const Navbar: React.FC<NavbarProps> = ({
       <div className="navbar-container">
         <div className="navbar-logo-section">
           <div>
-            <a 
-              href="#" 
-              onClick={(e) => handleNavigation(e, onNavigateHome)} 
+            <a
+              href="#"
+              onClick={(e) => handleNavigation(e, onNavigateHome)}
               className="navbar-logo"
             >
-              JobPriorityIndia
+              Wake Up India  
             </a>
           </div>
           {/* Desktop navigation */}
           <div className="navbar-desktop-links">
-            <a 
-              href="#" 
+            <a
+              href="#"
               onClick={(e) => handleNavigation(e, onNavigateHome)}
               className={`navbar-link ${currentPage === 'home' ? 'active' : ''}`}
             >
               Home
             </a>
-            <a 
-              href="#" 
+            <a
+              href="#"
               onClick={(e) => handleNavigation(e, onNavigateStories)}
               className={`navbar-link ${currentPage === 'stories' ? 'active' : ''}`}
             >
               Stories
             </a>
-            <a 
-              href="#" 
+            <a
+              href="#"
               onClick={(e) => handleNavigation(e, onNavigateResources)}
               className={`navbar-link ${currentPage === 'resources' ? 'active' : ''}`}
             >
               Resources
             </a>
-            <a 
-              href="#" 
+            <a
+              href="#"
               onClick={(e) => handleNavigation(e, onNavigateAbout)}
               className={`navbar-link ${currentPage === 'about' ? 'active' : ''}`}
             >
