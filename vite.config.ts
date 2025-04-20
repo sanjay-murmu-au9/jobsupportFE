@@ -5,10 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   const env = loadEnv(mode, process.cwd(), '')
-  
+  const isProd = mode === 'production'
+
   return {
     plugins: [react()],
-    base: '/jobsupportFE/',
+    base: isProd ? '/jobsupportFE/' : '/',
     define: {
       // Make environment variables available globally in the app
       'process.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || 'http://localhost:3000'),

@@ -35,7 +35,7 @@ const IS_BACKEND_AVAILABLE = true;
 const sendToApi = async (data: Record<string, any>, useCorsProxy: boolean = false): Promise<Response> => {
   // Create FormData object
   const formData = new FormData();
-  
+
   // Append all form fields
   Object.entries(data).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {
@@ -49,7 +49,7 @@ const sendToApi = async (data: Record<string, any>, useCorsProxy: boolean = fals
   for (const pair of formData.entries()) {
     console.log(`${pair[0]}: ${pair[1]}`);
   }
-  
+
   try {
     return await fetch(API_ENDPOINT, {
       method: "POST",
@@ -87,7 +87,7 @@ const RegistrationForm: React.FC = () => {
   const parseResumeAndFillForm = async (resumeUrl: string): Promise<void> => {
     try {
       console.log('Attempting to parse resume:', resumeUrl);
-      
+
       // Create request to parse resume
       const parseResponse = await fetch(PARSE_RESUME_ENDPOINT, {
         method: 'POST',
@@ -96,21 +96,21 @@ const RegistrationForm: React.FC = () => {
         },
         body: JSON.stringify({ resumeUrl })
       });
-      
+
       if (!parseResponse.ok) {
         throw new Error(`Resume parsing failed with status ${parseResponse.status}`);
       }
-      
+
       // Get parsed data
       const parsedData = await parseResponse.json();
       console.log('Resume parsed successfully:', parsedData);
-      
+
       // Update form with parsed data
       if (parsedData && parsedData.success && parsedData.data) {
         // Access the nested data structure
         const resumeData = parsedData.data;
         console.log('Updating form with resume data:', resumeData);
-        
+
         setFormData(prev => ({
           ...prev,
           firstName: resumeData.firstName || prev.firstName,
@@ -132,6 +132,12 @@ const RegistrationForm: React.FC = () => {
   const countryOptions = [
     { value: 'in', label: 'India' },
   ];
+
+  React.useEffect(()=>{
+    if(countryOptions.length == 1){
+      setFormData(prev => ({...prev,country:countryOptions[0].value}));
+    }
+  }, [])
 
   const educationOptions = [
     { value: 'high_school', label: 'High School' },
@@ -201,32 +207,32 @@ const RegistrationForm: React.FC = () => {
         // Create FormData object for file upload
         const uploadFormData = new FormData();
         uploadFormData.append('file', file);
-        
+
         // Set a loading state
         setIsFileUploading(true);
-        
+
         try {
           // Upload the file to the separate upload endpoint with timeout
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-          
+
           console.log('Attempting to upload file to:', UPLOAD_ENDPOINT);
           const uploadResponse = await fetch(UPLOAD_ENDPOINT, {
             method: 'POST',
             body: uploadFormData,
             signal: controller.signal
           });
-          
+
           clearTimeout(timeoutId);
-          
+
           if (!uploadResponse.ok) {
             throw new Error(`Upload failed with status ${uploadResponse.status}`);
           }
-          
+
           // Parse the response to get the file URL
           const uploadResult = await uploadResponse.json();
           console.log('Upload response:', uploadResult);
-          
+
           // Check if we have a file URL in the response
           if (uploadResult.fileUrl) {
             // Store the file URL in the form state
@@ -235,7 +241,7 @@ const RegistrationForm: React.FC = () => {
               resume: uploadResult.fileUrl
             }));
             console.log('File uploaded successfully, URL stored for form submission');
-            
+
             // Try to parse resume and autofill form fields
             try {
               await parseResumeAndFillForm(uploadResult.fileUrl);
@@ -245,7 +251,7 @@ const RegistrationForm: React.FC = () => {
           } else {
             throw new Error('No file URL in response');
           }
-        } catch (error: any) {
+        } catch (error: any)  {
           console.error('Error uploading file:', error);
           console.error('Error details:', {
             message: error.message,
@@ -253,7 +259,7 @@ const RegistrationForm: React.FC = () => {
             stack: error.stack,
             endpoint: UPLOAD_ENDPOINT
           });
-          
+
           let errorMessage = 'Failed to upload file. Please try again.';
           if (error.name === 'AbortError') {
             errorMessage = 'Upload timed out. Please try again or use a smaller file.';
@@ -262,12 +268,12 @@ const RegistrationForm: React.FC = () => {
           } else if (error.message.includes('NetworkError')) {
             errorMessage = 'Network error occurred. This might be due to CORS restrictions.';
           }
-          
+
           setErrors(prev => ({
             ...prev,
             resume: errorMessage
           }));
-          
+
           setFormData(prev => ({
             ...prev,
             resume: file.name + ' (local only)'
