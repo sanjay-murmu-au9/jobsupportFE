@@ -194,7 +194,7 @@ const HomePage: React.FC<HomePageProps> = ({
         <div className="container">
           <div className="home-footer-columns">
             <div className="home-footer-brand">
-              <h3 className="home-footer-title">JobPriorityIndia</h3>
+              <h3 className="home-footer-title">Wake Up India</h3>
               <p className="home-footer-description">
                 Advocating for government action to address India's unemployment crisis. We gather data and stories to push for concrete policy changes and support for those affected.
               </p>
@@ -267,7 +267,7 @@ const HomePage: React.FC<HomePageProps> = ({
             </div>
           </div>
           <div className="home-footer-copyright">
-            <p>&copy; {new Date().getFullYear()} JobPriorityIndia - Advocating for India's Unemployed. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Wake Up India - Advocating for India's Unemployed. All rights reserved.</p>
           </div>
         </div>
       </footer>

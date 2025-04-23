@@ -333,7 +333,7 @@ const SimpleApp: React.FC = () => {
               About Our Initiative
             </h1>
             <p className="page-description">
-              JobPriorityIndia is a grassroots movement advocating for better unemployment support and job creation policies in India.
+              Wake Up India   is a grassroots movement advocating for better unemployment support and job creation policies in India.
             </p>
             <div className="divider"></div>
             <div className="button-group">
@@ -417,7 +417,7 @@ const SimpleApp: React.FC = () => {
           <div className="hero-content">
             <h1 className="hero-title">
               {/* Making Employment a National Priority for India */}
-              India’s Jobs Market Is Collapsing—5.2 Million Lives at Danger!
+              India’s Jobs Market Is Collapsing—5.2, Million Lives at Danger!
             </h1>
             <p className="hero-description">
               The unemployment crisis in India has reached critical levels. Over <strong>5.2 million</strong> workers
@@ -558,7 +558,7 @@ const SimpleApp: React.FC = () => {
         <div className="container">
           <div className="footer-columns">
             <div className="footer-brand">
-              <h3 className="footer-title">JobPriorityIndia</h3>
+              <h3 className="footer-title"> Wake Up India </h3>
               <p className="footer-description">
                 Advocating for government action to address India's unemployment crisis. We gather data and stories to push for concrete policy changes and support for those affected.
               </p>
@@ -635,7 +635,7 @@ const SimpleApp: React.FC = () => {
               <ul className="footer-links">
                 <li className="contact-item">
                   <i className="fas fa-map-marker-alt contact-icon"></i>
-                  <span>123 Advocacy Street, New Delhi, India, 110001</span>
+                  <span>123 Advocacy Street, New Delhi, India, 110020</span>
                 </li>
                 <li className="contact-item">
                   <i className="fas fa-phone-alt contact-icon"></i>
@@ -653,7 +653,7 @@ const SimpleApp: React.FC = () => {
             </div>
           </div>
           <div className="footer-copyright">
-            <p>&copy; {new Date().getFullYear()} JobPriorityIndia - Advocating for India's Unemployed. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Wake Up India - Advocating for India's Unemployed. All rights reserved.</p>
           </div>
         </div>
       </footer>

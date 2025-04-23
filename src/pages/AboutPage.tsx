@@ -21,7 +21,7 @@ const AboutPage: React.FC<AboutPageProps> = ({
 }) => {
   return (
     <div className="about-page">
-      <Navbar 
+      <Navbar
         onNavigateHome={onNavigateHome}
         onNavigateRegister={onNavigateRegister}
         onNavigateStories={onNavigateStories}
@@ -47,17 +47,17 @@ const AboutPage: React.FC<AboutPageProps> = ({
             About Our Initiative
           </h1>
           <p className="about-description">
-            JobPriorityIndia is a grassroots movement advocating for better unemployment support and job creation policies in India.
+            Wake Up India is a grassroots movement advocating for better unemployment support and job creation policies in India.
           </p>
           <div className="about-divider"></div>
           <div className="about-button-group">
-            <button 
+            <button
               onClick={onNavigateRegister}
               className="about-primary-button"
             >
               Join Our Growing Movement
             </button>
-            <button 
+            <button
               onClick={onNavigateHome}
               className="about-secondary-button"
             >
@@ -65,7 +65,7 @@ const AboutPage: React.FC<AboutPageProps> = ({
             </button>
           </div>
         </div>
-        
+
         <div className="about-card">
           <div className="about-card-header">
             <svg className="about-header-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
