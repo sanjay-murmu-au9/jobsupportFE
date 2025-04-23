@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    base: isProd ? '/jobsupport/' : '/',
+    base: isProd ? '/jobsupportFE/' : '/',
     define: {
       // Make environment variables available globally in the app
       'process.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || 'http://localhost:3000'),
